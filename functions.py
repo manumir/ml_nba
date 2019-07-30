@@ -17,7 +17,8 @@ def get_avgs(df,column):
       count+=int(x)
     avg=float(count/df.shape[0])
     return avg
-  except:
+  except Exception as e:
+    print(e)
     return np.nan
 
 def create_winrate(df):

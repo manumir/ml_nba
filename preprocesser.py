@@ -23,5 +23,5 @@ for ix in range(len(data)):
   for c in c2_avg:
     data.at[ix,c]=f.get_avgs(past,c)
 
-data.to_csv('train.csv',index=False)
+data.to_csv('train1235.csv',index=False)
 

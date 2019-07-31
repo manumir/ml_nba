@@ -2,32 +2,29 @@ import numpy as np
 
 # create a data frame of games before a certain date
 def get_past_games(df,data1,team,amount):
-  pgames=[]
-  name=team
-  data1=data1
   rows=df.loc[df['Team'] == team]
   rows=rows.loc[rows['Game Date'] < data1]
   return rows[-(amount):]
 
-#averages for each team        
+#averages for each column 
 def get_avgs(df,column):
   count=0
   try:
     for x in df[column].values:
       count+=int(x)
-    avg=float(count/df.shape[0])
+    avg=float(count/len(df[column].values))
     return avg
   except Exception as e:
-    print(e)
     return np.nan
 
-def create_winrate(df):
+def create_winrate(df,amount):
   try:
+    df=df[-(amount):]
     b=0
     for x in df['W/L'].values:
       if x == 'W':
         b+=1
-    return float(b/len(df))
+    return float(b/amount)
   except:
     return np.nan
 

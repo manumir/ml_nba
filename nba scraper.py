@@ -49,9 +49,3 @@ def get_stats():
 get_stats()
 print("--- %s seconds ---" % (time.time() - start_time))
 
-
-# In[ ]:
-
-
-
-

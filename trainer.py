@@ -7,7 +7,8 @@ from tensorflow.keras import layers
 
 import functions as f
 
-a=pd.read_csv('test_corr.csv')
+a=pd.read_csv('pls.csv')
+a.pop('Unnamed: 0')
 
 print(a.shape)
 a=a.dropna()

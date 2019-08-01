@@ -46,3 +46,26 @@ def location(df):
             locations.append(1)
     return locations
 
+def append2for1(data):
+  a=data.loc[[0]]
+  ix=0
+  while ix < len(data):
+    print(ix)
+    if ix != 0:
+      a=a.append(data.loc[[ix]])
+    ix+=2
+
+  b=data.loc[[1]]
+  ix=1
+  while ix < len(data):
+    print(ix)
+    if ix != 1:
+      b=b.append(data.loc[[ix]])
+    ix+=2
+
+  a=a.reset_index(drop=True)
+  b=b.reset_index(drop=True)
+  b=b.join(a,lsuffix='_left',rsuffix='_right')
+  
+  return b
+

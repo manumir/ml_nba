@@ -7,24 +7,22 @@ from tensorflow.keras import layers
 
 import functions as f
 
-a=pd.read_csv('pls.csv')
-a.pop('Unnamed: 0')
-
-print(a.shape)
+a=pd.read_csv('train.csv')
 a=a.dropna()
-print(a.shape)
+'''
+a=f.append2for1(a)
 
-#a=a.drop(['Team_left','Match Up_left','Game Date_left','Team_right',
- #         'Match Up_right','Game Date_right','MIN_left','MIN_right',
-  #        'W/L_left','W/L_right'],1)
+a['Result']=f.result(a)
+a['Location']=f.location(a)
 
-b=[]
-for value in a['W/L']:
-  if value == 'W':
-    b.append(1)
-  else:
-    b.append(0)
-a['Result']=b
+a.to_csv('try1.csv',index=False)
+'''
+a=a.drop(['Team_left','Match Up_left','Game Date_left','Team_right',
+          'Match Up_right','Game Date_right','MIN_left','MIN_right',
+          'W/L_left','W/L_right'],1)
+
+#a=a.drop(['H/A_left','H/A_right'],1)
+
 print(a.corr()['Result'])
 
 train_dataset = a.sample(frac=0.9)
@@ -47,8 +45,8 @@ print(len(train_dataset.keys()))
 
 def build_model():
     model = keras.Sequential([
-    layers.Dense(43, input_shape=[len(train_dataset.keys())],activation='sigmoid'),
-    layers.Dense(43,activation='sigmoid'),
+    layers.Dense(39, input_shape=[len(train_dataset.keys())],activation='sigmoid'),
+    layers.Dense(39,activation='sigmoid'),
     layers.Dense(1,activation='sigmoid'),
   ])
     model.compile(optimizer='rmsprop',
@@ -58,7 +56,7 @@ def build_model():
 
 model = build_model()
 
-early_stop = keras.callbacks.EarlyStopping(monitor='val_acc', patience=50)
+early_stop = keras.callbacks.EarlyStopping(monitor='val_acc', patience=10)
 
 import os
 checkpoint_path = "training_2/cp.ckpt"

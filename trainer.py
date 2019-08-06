@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#/usr/bin/env python
 
 import pandas as pd
 import tensorflow as tf
@@ -25,7 +25,7 @@ a=a.drop(['Team_left','Match Up_left','Game Date_left','Team_right',
 
 print(a.corr()['Result'])
 
-train_dataset = a.sample(frac=0.9)
+train_dataset = a.sample(frac=0.8)
 test_dataset = a.drop(train_dataset.index)
 
 train_stats =train_dataset.describe()
@@ -40,23 +40,31 @@ def norm(x):
 normed_train_data = norm(train_dataset)
 normed_test_data = norm(test_dataset)
 
-print(normed_train_data.columns)
 print(len(train_dataset.keys()))
 
 def build_model():
     model = keras.Sequential([
-    layers.Dense(39, input_shape=[len(train_dataset.keys())],activation='sigmoid'),
-    layers.Dense(39,activation='sigmoid'),
+    layers.Dense(41, input_shape=[len(train_dataset.keys())],activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
+    layers.Dense(41,activation='sigmoid'),
     layers.Dense(1,activation='sigmoid'),
   ])
-    model.compile(optimizer='rmsprop',
+    model.compile(optimizer='adam',
               loss='binary_crossentropy',
               metrics=['accuracy'])
     return model
 
 model = build_model()
 
-early_stop = keras.callbacks.EarlyStopping(monitor='val_acc', patience=10)
+early_stop = keras.callbacks.EarlyStopping(monitor='val_acc', patience=15)
 
 import os
 checkpoint_path = "training_2/cp.ckpt"
@@ -68,8 +76,9 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, save_weights_o
 history = model.fit(normed_train_data, train_labels,validation_split=0.2, epochs=500, callbacks=[early_stop])#,cp_callback])
 #history = model.fit(train_dataset, train_labels,validation_split=0.2, epochs=500, callbacks=[early_stop])#,cp_callback])
 
-print(model.evaluate(normed_test_data,test_labels)[1])
+acc=model.evaluate(normed_test_data,test_labels)[1]
+print(acc)
 test_predictions = model.predict(normed_test_data)
 print(test_predictions)
 
-model.save('1.h5')
+model.save(str(acc)+'.h5')

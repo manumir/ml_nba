@@ -17,7 +17,8 @@ for ix in range(len(data)):
   print(ix)
   data1=data.loc[ix,'Game Date']
   team=data.loc[ix,'Team']
-  past=f.get_past_games(data,data1,team,47)
+  ixs=f.get_past_games(data,data1,team,47)
+  past=data.loc[ixs]
   data.at[ix,'winrate 50']=f.create_winrate(past,47)
 #  data.at[ix,'winrate 7']=f.create_winrate(past,7)
   

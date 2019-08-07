@@ -40,6 +40,8 @@ def norm(x):
 normed_train_data = norm(train_dataset)
 normed_test_data = norm(test_dataset)
 
+print(normed_train_data.columns)
+print(len(normed_train_data.columns))
 print(len(train_dataset.keys()))
 
 def build_model():

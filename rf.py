@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+import functions as f
 
 data=pd.read_csv('train.csv')
 a=data.dropna()
@@ -22,11 +23,9 @@ test_labels = test_dataset.pop('Result')
 #normed_train_data = norm(train_dataset)
 #normed_test_data = norm(test_dataset)
 
-clf = RandomForestClassifier(n_estimators=1000,random_state=0)
+clf = RandomForestClassifier(n_estimators=1000,n_jobs=-1,random_state=0)
 
 clf.fit(train_dataset,train_labels)
-
-acc=clf.score(test_dataset,test_labels)
-print(clf.predict(test_dataset))
-print(acc)
+preds=clf.predict(test_dataset)
+print(f.acc(preds,test_labels))
 

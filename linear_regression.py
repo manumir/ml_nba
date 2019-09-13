@@ -8,7 +8,15 @@ a=a.drop(['Team_left','Match Up_left','Game Date_left','Team_right',
           'Match Up_right','Game Date_right','MIN_left','MIN_right',
           'W/L_left','W/L_right'],1)
 
-train_dataset = a.sample(frac=0.85,random_state=1)
+corr=a.corr()['Result']
+del2=[]
+for x in corr.index:
+  if abs(corr[x]) < 0.1:
+    del2.append(x)
+
+a=a.drop(del2,1)
+
+train_dataset = a.sample(frac=0.85,random_state=19)#19,
 test_dataset = a.drop(train_dataset.index)
 
 #train_stats =train_dataset.describe()

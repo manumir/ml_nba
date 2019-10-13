@@ -1,6 +1,6 @@
 import pandas as pd
 import functions as f
-from sklearn.linear_model import LinearRegression
+from sklearn import svm
 from sklearn import preprocessing
 import joblib
 
@@ -10,34 +10,25 @@ a=a.drop(['Team','Match Up','Game Date','Team_right',
            'Match Up_right','Game Date_right','MIN','MIN_right',
            'W/L','W/L_right'],1)
 
-corr=a.corr()['Result']
-del2=[]
-for x in corr.index:
-  if abs(corr[x]) < 0.1:
-    del2.append(x)
-
-a=a.drop(del2,1)
-
-print(a.columns)
-train_dataset = a.sample(frac=0.9,random_state=24)
+train_dataset = a.sample(frac=0.9,random_state=10)
 test_dataset = a.drop(train_dataset.index)
 
 train_labels = train_dataset.pop('Result')
 test_labels = test_dataset.pop('Result')
 
-clf = LinearRegression(n_jobs=-1)
+clf = svm.SVC(random_state=2,kernel='linear')
 
-#train_dataset=preprocessing.normalize(train_dataset)
-#test_dataset=preprocessing.normalize(test_dataset)
+train_dataset=preprocessing.normalize(train_dataset)
+test_dataset=preprocessing.normalize(test_dataset)
 
 clf.fit(train_dataset,train_labels)
-joblib.dump(clf,'Linear_regression.joblib')
+joblib.dump(clf,'svm2.0.joblib')
 
 acc=clf.score(test_dataset,test_labels)
 preds=clf.predict(test_dataset)
 print(f.acc(preds,test_labels))
 
-ones,zeros=0,0
+zeros,ones=0,0
 for pred in preds:
   if round(pred)==1:
     ones+=1

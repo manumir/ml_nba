@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 # create a data frame of games before a certain date
 def get_past_games(df,data1,team,amount):
@@ -20,8 +21,8 @@ def get_avgs(df,column):
     avg=float(count/len(df[column].values))
     return avg
   except Exception as e:
-    return np.nan
     print(e)
+    return np.nan
 
 def create_winrate(df,amount):
   try:
@@ -44,37 +45,39 @@ def result(df):
     return results
 
 def location(df):
-    locations=[]
-    for value in df['Match Up_right'].values:
-        if value[4]=='v':
-            locations.append(0)
-        else:
-            locations.append(1)
-    return locations
+  locations=[]
+  print(df['Match Up_right'])
+  for value in df['Match Up_right'].values:
+    if value[4]=='v':
+      locations.append(0)
+    else:
+      locations.append(1)
+  return locations
 
 def append2for1(data):
-  a=data.loc[[0]]
-  ix=0
-  while ix < len(data):
-    print(ix)
-    if ix != 0:
-      a=a.append(data.loc[[ix]])
-    ix+=2
+  data=data.reset_index(drop=True)
+  b=[]
+  left=pd.DataFrame(columns=['Team','Match Up','Game Date','W/L','MIN','PTS','FGM','FGA','FG%','3PM',
+                          '3PA','3P%','FTM','FTA','FT%','OREB','DREB','REB','AST','TOV','STL','BLK',
+                          'PF','+/-','winrate 30','winrate 6'])
+  right=pd.DataFrame(columns=['Team','Match Up','Game Date','W/L','MIN','PTS','FGM','FGA','FG%','3PM',
+                          '3PA','3P%','FTM','FTA','FT%','OREB','DREB','REB','AST','TOV','STL','BLK',
+                          'PF','+/-','winrate 30','winrate 6'])
 
-  b=data.loc[[1]]
-  ix=1
-  while ix < len(data):
-    print(ix)
-    if ix != 1:
-      b=b.append(data.loc[[ix]])
-    ix+=2
-
-  a=a.reset_index(drop=True)
-  b=b.reset_index(drop=True)
-  b=b.join(a,lsuffix='_left',rsuffix='_right')
+  it=list(range(data.shape[0]))
+  for ix in it:
+    name=data.at[ix,'Match Up'][-3:]
+    date=data.at[ix,'Game Date']
+    a=data.loc[data['Game Date']==date]
+    a=a.loc[data['Team']==name]
+    it.remove(ix)
+    left=left.append(data.loc[ix])
+    right=right.append(a)
+    left=left.reset_index(drop=True)
+    right=right.reset_index(drop=True)
+    a=left.join(right,rsuffix='_right')
+  return a
   
-  return b
-
 #create a function to determine if a date is sooner than another date
 def datecomp(date1,date2):
     if date1[6:len(date1)]>date2[6:len(date2)]:
@@ -85,29 +88,30 @@ def datecomp(date1,date2):
         return date1
     
     if date1[6:len(date1)]==date2[6:len(date2)]:
-        if date1[3:5]>date2[3:5]:
+        if date1[0:2]>date2[0:2]:
             #print("date1's month is later than date2's month")
             return date2
     if date1[6:len(date1)]==date2[6:len(date2)]:
-        if date1[3:5]<date2[3:5]:
+        if date1[0:2]<date2[0:2]:
             #print("date2's month is later than date1's month")
             return date1
         
     if date1[6:len(date1)]==date2[6:len(date2)]:
-        if date1[3:5]==date2[3:5]:
-            if date1[0:2]>date2[0:2]:
+        if date1[0:2]>date2[0:2]:
+            if date1[3:5]==date2[3:5]:
                 #print("date1's day is later than date2's day")
                 return date2
     if date1[6:len(date1)]==date2[6:len(date2)]:
-        if date1[3:5]==date2[3:5]:
-            if date1[0:2]<date2[0:2]:
+        if date1[0:2]<date2[0:2]:
+            if date1[3:5]==date2[3:5]:
                 #print("date2's day is later than date1's day")
                 return date1
             
     if date1[6:len(date1)]==date2[6:len(date2)]:
-        if date1[3:5]==date2[3:5]:
-            if date1[0:2]==date2[0:2]:
+        if date1[0:2]==date2[0:2]:
+            if date1[3:5]==date2[3:5]:
                 return 0
+
 def acc(true_y,pred_y):
   true_y=list(true_y)
   pred_y=list(pred_y)

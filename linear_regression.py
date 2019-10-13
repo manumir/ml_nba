@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import pandas as pd
 import functions as f
 from sklearn.linear_model import LinearRegression 

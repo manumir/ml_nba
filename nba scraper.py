@@ -15,26 +15,46 @@ from selenium.common.exceptions import TimeoutException
 
 year=str(sys.argv[1])
 
+currentpath=os.getcwd()
+#os.makedirs(str(os.getcwd())+'\\data\\')
+path2data=os.path.join(currentpath,"data\\")
+
+#
+def season_name(year):
+  if int(year[-2:])+1 < 10:
+    add0='0'+str(int(year[-2:])+1)
+    return year+'-'+add0
+  else:
+    return year+'-'+str(int(year[-2:])+1)
+
 def get_stats():
     driver = webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
-    print('driver is initalized')
-    driver.get('https://stats.wnba.com/teams/boxscores-traditional/?Season='+year+'&SeasonType=Regular%20Season')
+    
+    if len(sys.argv)<3:
+      driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Regular%20Season')
+    else:
+      driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Playoffs')
+    WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.nba-stat-table__overflow")))
+    try:
+      path_2_num_pages=driver.find_element_by_class_name("stats-table-pagination__info")
+      NUMBER_OF_PAGES=int(path_2_num_pages.text[-2:])
+    except:
+      NUMBER_OF_PAGES=1  
 
-    file=open('data_raw.txt','w')
-    path_2_num_pages=driver.find_element_by_class_name("stats-table-pagination__info")
-    NUMBER_OF_PAGES=int(path_2_num_pages.text[-2:])
-    print(NUMBER_OF_PAGES)
+    file=open(str(path2data)+'data_raw.txt','w')
     i=0
+    print(NUMBER_OF_PAGES)
     for i in range(NUMBER_OF_PAGES):
-        WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.nba-stat-table__overflow")))
+      html=bs4(driver.page_source,'html.parser')
+      #features = html.table.thead.tr.text #don't need to scrape this multiple times
+      stats=html.table.tbody.text 
+      file.write(stats)
 
-        html=bs4(driver.page_source,'html.parser')
-        #features = html.table.thead.tr.text #don't need to scrape this multiple times
-        stats= html.table.tbody.text 
-        file.write(stats)
-
+      if NUMBER_OF_PAGES>1:
         path=driver.find_element_by_class_name("stats-table-pagination__next")
         path.click()
+      else:
+        continue
 
     file.close()
     driver.quit()
@@ -43,7 +63,7 @@ get_stats()
 print("scraped in %s seconds" % (time.time() - start_time))
 
 f=[]
-file =open('data_raw.txt','r') #,encoding ='cp1252')
+file =open(path2data+'data_raw.txt','r') #,encoding ='cp1252')
 file1=file.readlines()
 
 for x in file1:
@@ -55,9 +75,9 @@ for x in file1:
     f.append(x)
 
 file.close()
-os.remove('data_raw.txt')
+os.remove(path2data+'data_raw.txt')
 
-file=open('data.txt','w')
+file=open(path2data+'data.txt','w')
 i=0
 for x in f:
     file.write(x)
@@ -69,12 +89,16 @@ file.close()
 
 #try to do this without having to open the file again
 
-filer=open('data.txt','r')
+filer=open(path2data+'data.txt','r')
 lines=filer.readlines()
 filer.close()
-os.remove('data.txt')
+os.remove(path2data+'data.txt')
 
-file=open('raw_'+year+'.csv','w')
+if len(sys.argv)<3:
+  file=open(path2data+'raw_'+season_name(year)+'.csv','w')
+else:
+  file=open(path2data+'raw_'+season_name(year)+'playoffs.csv','w')
+
 for line in lines:
   file.write(line)
 file.close()

@@ -18,11 +18,11 @@ def get_avgs(df,column):
   try:
     for x in df[column].values:
       count+=int(x)
-    avg=float(count/len(df[column].values))
+    avg=float(count/len(df[column]))
     return avg
   except Exception as e:
     print(e)
-    return np.nan
+    return "NaN"
 
 def create_winrate(df,amount):
   try:
@@ -31,9 +31,9 @@ def create_winrate(df,amount):
     for x in df['W/L'].values:
       if x == 'W':
         b+=1
-    return float(b/amount)
+    return float(b/len(df))
   except:
-    return np.nan
+    return "NaN"
 
 def result(df):
     results=[]
@@ -97,13 +97,13 @@ def datecomp(date1,date2):
             return date1
         
     if date1[6:len(date1)]==date2[6:len(date2)]:
-        if date1[0:2]>date2[0:2]:
-            if date1[3:5]==date2[3:5]:
+        if date1[0:2]==date2[0:2]:
+            if date1[3:5]>date2[3:5]:
                 #print("date1's day is later than date2's day")
                 return date2
     if date1[6:len(date1)]==date2[6:len(date2)]:
-        if date1[0:2]<date2[0:2]:
-            if date1[3:5]==date2[3:5]:
+        if date1[0:2]==date2[0:2]:
+            if date1[3:5]<date2[3:5]:
                 #print("date2's day is later than date1's day")
                 return date1
             

@@ -6,9 +6,9 @@ import joblib
 
 data=pd.read_csv('train.csv')
 a=data.dropna()
-a=a.drop(['Team','Match Up','Game Date','Team_right',
-           'Match Up_right','Game Date_right','MIN','MIN_right',
-           'W/L','W/L_right'],1)
+a=a.drop(['Team','Match Up','Game Date','Team_away',
+           'Match Up_away','Game Date_away','MIN','MIN_away',
+           'W/L','W/L_away'],1)
 
 train_dataset = a.sample(frac=0.9,random_state=10)
 test_dataset = a.drop(train_dataset.index)
@@ -16,17 +16,17 @@ test_dataset = a.drop(train_dataset.index)
 train_labels = train_dataset.pop('Result')
 test_labels = test_dataset.pop('Result')
 
-clf = MLPClassifier(activation='logistic',random_state=1,max_iter=500,batch_size=2)
+clf = MLPClassifier(activation='logistic',random_state=1,max_iter=500,batch_size=16)
 
 train_dataset=preprocessing.normalize(train_dataset)
 test_dataset=preprocessing.normalize(test_dataset)
 
 clf.fit(train_dataset,train_labels)
-joblib.dump(clf,'svm2.0.joblib')
+#joblib.dump(clf,'svm2.0.joblib')
 
 acc=clf.score(test_dataset,test_labels)
 preds=clf.predict(test_dataset)
-print(f.acc(preds,test_labels))
+print("acc: ",f.acc(preds,test_labels))
 
 ones=0
 zeros=0

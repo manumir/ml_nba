@@ -2,11 +2,11 @@ import numpy as np
 import pandas as pd
 import functions as f
 
-data=pd.read_csv('raw.csv')
-#data=data.dropna()
+data=pd.read_csv('whole_data_raw.csv')
+data=data.dropna()
 data.pop('Unnamed: 24')
 data=data.astype('object')
-#data=data[:1000]
+#data=data[:3001]
 
 c2_avg=['PTS', 'FGM', 'FGA','FG%', '3PM', '3PA', '3P%',
         'FTM', 'FTA', 'FT%', 'OREB', 'DREB', 'REB',
@@ -28,7 +28,7 @@ data.to_csv('data.csv',index=False)
 
 b=f.append2for1(data)
 b['Result']=f.result(b)
-b['Location']=f.location(b)
+#b['Location']=f.location(b)
 
 b.to_csv('train.csv',index=False)
 

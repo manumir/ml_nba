@@ -22,7 +22,7 @@ def get_avgs(df,column):
     return avg
   except Exception as e:
     print(e)
-    return "NaN"
+    return np.nan 
 
 def create_winrate(df,amount):
   try:
@@ -33,11 +33,11 @@ def create_winrate(df,amount):
         b+=1
     return float(b/len(df))
   except:
-    return "NaN"
+    return np.nan
 
 def result(df):
     results=[]
-    for value in df['W/L_right'].values:
+    for value in df['W/L_away'].values:
         if value=='L':
             results.append(0)
         else:
@@ -46,37 +46,44 @@ def result(df):
 
 def location(df):
   locations=[]
-  print(df['Match Up_right'])
-  for value in df['Match Up_right'].values:
+  print(df['Match Up_away'])
+  for value in df['Match Up_away'].values:
     if value[4]=='v':
       locations.append(0)
     else:
       locations.append(1)
   return locations
 
+
+#data needs to be ordered from most recent to less
 def append2for1(data):
   data=data.reset_index(drop=True)
-  b=[]
-  left=pd.DataFrame(columns=['Team','Match Up','Game Date','W/L','MIN','PTS','FGM','FGA','FG%','3PM',
-                          '3PA','3P%','FTM','FTA','FT%','OREB','DREB','REB','AST','TOV','STL','BLK',
-                          'PF','+/-','winrate 30','winrate 6'])
-  right=pd.DataFrame(columns=['Team','Match Up','Game Date','W/L','MIN','PTS','FGM','FGA','FG%','3PM',
-                          '3PA','3P%','FTM','FTA','FT%','OREB','DREB','REB','AST','TOV','STL','BLK',
-                          'PF','+/-','winrate 30','winrate 6'])
+  left=pd.DataFrame(columns=data.columns)
+  right=pd.DataFrame(columns=data.columns)
 
   it=list(range(data.shape[0]))
   for ix in it:
+    print(len(it))
     name=data.at[ix,'Match Up'][-3:]
     date=data.at[ix,'Game Date']
-    a=data.loc[data['Game Date']==date]
-    a=a.loc[data['Team']==name]
+    other=data.loc[data['Game Date']==date]
+    other=other.loc[data['Team']==name]
     it.remove(ix)
-    left=left.append(data.loc[ix])
-    right=right.append(a)
-    left=left.reset_index(drop=True)
-    right=right.reset_index(drop=True)
-    a=left.join(right,rsuffix='_right')
-  return a
+
+    # get home on the left
+    if data.loc[ix,'Match Up'][4]=='v':
+      left=left.append(data.loc[ix])
+      right=right.append(other)
+      left=left.reset_index(drop=True)
+      right=right.reset_index(drop=True)
+    else:
+      left=left.append(other)
+      right=right.append(data.loc[ix])
+      left=left.reset_index(drop=True)
+      right=right.reset_index(drop=True)
+    
+  row=left.join(right,rsuffix='_away')
+  return row
   
 #create a function to determine if a date is sooner than another date
 def datecomp(date1,date2):

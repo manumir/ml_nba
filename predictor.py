@@ -7,8 +7,8 @@ c2_avg=['PTS', 'FGM', 'FGA','FG%', '3PM', '3PA', '3P%',
         'FTM', 'FTA', 'FT%', 'OREB', 'DREB', 'REB',
         'AST', 'TOV', 'STL', 'BLK', 'PF', '+/-','winrate 30','winrate 6']
 
-c2_avg1=['FG%','+/-','winrate 30','winrate 6','+/-_right',
-         'winrate 30_right','Location']
+c2_avg1=['FG%','+/-','winrate 30','winrate 6','+/-_away',
+         'winrate 30_away','Location']
 
 home=data.loc[data['Team']==str(input('home: '))][:1]
 away=data.loc[data['Team']==str(input('away: '))][:1]

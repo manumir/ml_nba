@@ -6,9 +6,9 @@ import joblib
 
 data=pd.read_csv('train.csv')
 a=data.dropna()
-a=a.drop(['Team','Match Up','Game Date','Team_right',
-           'Match Up_right','Game Date_right','MIN','MIN_right',
-           'W/L','W/L_right'],1)
+a=a.drop(['Team','Match Up','Game Date','Team_away',
+           'Match Up_away','Game Date_away','MIN','MIN_away',
+           'W/L','W/L_away'],1)
 
 train_dataset = a.sample(frac=0.9,random_state=10)
 test_dataset = a.drop(train_dataset.index)

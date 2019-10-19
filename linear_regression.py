@@ -6,9 +6,9 @@ import joblib
 
 data=pd.read_csv('train.csv')
 a=data.dropna()
-a=a.drop(['Team','Match Up','Game Date','Team_right',
-           'Match Up_right','Game Date_right','MIN','MIN_right',
-           'W/L','W/L_right'],1)
+a=a.drop(['Team','Match Up','Game Date','Team_away',
+           'Match Up_away','Game Date_away','MIN','MIN_away',
+           'W/L','W/L_away'],1)
 
 corr=a.corr()['Result']
 del2=[]
@@ -19,7 +19,7 @@ for x in corr.index:
 a=a.drop(del2,1)
 
 print(a.columns)
-train_dataset = a.sample(frac=0.9,random_state=24)
+train_dataset = a.sample(frac=0.95,random_state=11)# 11,7
 test_dataset = a.drop(train_dataset.index)
 
 train_labels = train_dataset.pop('Result')
@@ -27,15 +27,17 @@ test_labels = test_dataset.pop('Result')
 
 clf = LinearRegression(n_jobs=-1)
 
-#train_dataset=preprocessing.normalize(train_dataset)
-#test_dataset=preprocessing.normalize(test_dataset)
+train_dataset=preprocessing.normalize(train_dataset)
+test_dataset=preprocessing.normalize(test_dataset)
+
+train_dataset=preprocessing.scale(train_dataset)
+test_dataset=preprocessing.scale(test_dataset)
 
 clf.fit(train_dataset,train_labels)
-joblib.dump(clf,'Linear_regression.joblib')
+#joblib.dump(clf,'Linear_regression.joblib')
 
-acc=clf.score(test_dataset,test_labels)
 preds=clf.predict(test_dataset)
-print(f.acc(preds,test_labels))
+print("\nacc: ",f.acc(preds,test_labels))
 
 ones,zeros=0,0
 for pred in preds:
@@ -44,7 +46,7 @@ for pred in preds:
   else:
     zeros+=1
 
-print('lenght of test:',len(preds))
+print('\nlenght of test:',len(preds))
 print('0s:',zeros/len(preds))
 print('1s:',ones/len(preds))
 

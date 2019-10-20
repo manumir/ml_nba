@@ -46,7 +46,6 @@ def result(df):
 
 def location(df):
   locations=[]
-  print(df['Match Up_away'])
   for value in df['Match Up_away'].values:
     if value[4]=='v':
       locations.append(0)

@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 log=open('log1.txt','r')
 lines=log.readlines()
 

@@ -1,4 +1,4 @@
-#/usr/bin/env python
+#!/usr/bin/python3
 
 import pandas as pd
 import tensorflow as tf
@@ -39,8 +39,8 @@ print(len(train_dataset.keys()))
 
 def build_model():
     model = keras.Sequential([
-    layers.Dense(6, input_shape=[len(train_dataset.keys())],activation='sigmoid'),
-    layers.Dense(6,activation='sigmoid'),
+    layers.Dense(train_dataset.shape[1],input_shape=[len(train_dataset.keys())],activation='sigmoid'),
+    layers.Dense(train_dataset.shape[1],activation='sigmoid'),
     layers.Dense(1,activation='sigmoid'),
   ])
     model.compile(optimizer='rmsprop',
@@ -52,7 +52,7 @@ model = build_model()
 early_stop = keras.callbacks.EarlyStopping(monitor='val_acc', patience=20)
 history = model.fit(normed_train_data, train_labels,validation_split=0.2, epochs=500, callbacks=[early_stop])
 
-print(model.evaluate(normed_test_data,test_labels)[1])
-test_predictions = model.predict(normed_test_data)
+acc= model.evaluate(normed_test_data,test_labels)
+print("\nacc: ",acc,'\n')
 
 #model.save('1.h5')

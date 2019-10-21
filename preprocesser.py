@@ -3,8 +3,8 @@ import pandas as pd
 import functions as f
 
 data=pd.read_csv('whole_data_raw.csv')
-data=data.dropna()
 data.pop('Unnamed: 24')
+data=data.dropna()
 data=data.astype('object')
 #data=data[:3001]
 

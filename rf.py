@@ -2,6 +2,7 @@ import pandas as pd
 import functions as f
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import preprocessing
+import joblib
 
 data=pd.read_csv('train.csv')
 a=data.dropna()
@@ -14,12 +15,6 @@ test_dataset = a.drop(train_dataset.index)
 
 train_labels = train_dataset.pop('Result')
 test_labels = test_dataset.pop('Result')
-
-train_dataset=preprocessing.normalize(train_dataset)
-test_dataset=preprocessing.normalize(test_dataset)
-
-train_dataset=preprocessing.scale(train_dataset)
-test_dataset=preprocessing.scale(test_dataset)
 
 clf = RandomForestClassifier(n_estimators=100, random_state=11,n_jobs=-1)
 clf.fit(train_dataset,train_labels)
@@ -37,3 +32,5 @@ for pred in preds:
 print('\nlenght of test:',len(preds))
 print('0s:',zeros/len(preds))
 print('1s:',ones/len(preds))
+
+joblib.dump(clf,'random_forest.joblib')

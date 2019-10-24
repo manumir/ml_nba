@@ -18,12 +18,6 @@ test_labels = test_dataset.pop('Result')
 
 clf = LogisticRegression(solver='liblinear')
 
-train_dataset=preprocessing.normalize(train_dataset)
-test_dataset=preprocessing.normalize(test_dataset)
-
-train_dataset=preprocessing.scale(train_dataset)
-test_dataset=preprocessing.scale(test_dataset)
-
 clf.fit(train_dataset,train_labels)
 #joblib.dump(clf,'Logistic.joblib')
 

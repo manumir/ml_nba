@@ -18,9 +18,6 @@ test_labels = test_dataset.pop('Result')
 
 clf = MLPClassifier(activation='logistic',random_state=1,max_iter=500,batch_size=16)
 
-train_dataset=preprocessing.normalize(train_dataset)
-test_dataset=preprocessing.normalize(test_dataset)
-
 clf.fit(train_dataset,train_labels)
 #joblib.dump(clf,'svm2.0.joblib')
 

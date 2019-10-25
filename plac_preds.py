@@ -59,8 +59,8 @@ def get_stats():
 get_stats()
 
 df=pd.DataFrame()
-df['away']=f.name2acro(aways,'placard')
 df['home']=f.name2acro(homes,'placard')
+df['away']=f.name2acro(aways,'placard')
 df['date']=dates
 df['plac_home']=home_odds
 df['plac_away']=away_odds

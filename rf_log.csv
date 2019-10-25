@@ -1,6 +1,6 @@
 away,home,pred
-TOR,NOP,[0]
-LAC,LAL,[0]
+NOP,TOR,[0]
+LAL,LAC,[0]
 CHI,CHA,[0]
 DET,IND,[1]
 CLE,ORL,[0]

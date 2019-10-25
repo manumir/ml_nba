@@ -53,11 +53,12 @@ def get_stats():
       html=bs4(driver.page_source,'html.parser')
       #features = html.table.thead.tr.text #don't need to scrape this multiple times
       stats=html.table.tbody.text
+      print(stats)
       match=re.match(year,stats)
       print(match)
       if match:
           stats=stats[:match.start()]
-      #file.write(stats)
+      file.write(stats)
 
       if NUMBER_OF_PAGES>1:
         path=driver.find_element_by_class_name("stats-table-pagination__next")
@@ -108,8 +109,8 @@ if len(sys.argv)<3:
 else:
   file=open(path2data+'raw_'+season_name(year)+'playoffs.csv','a')
 
-#for line in lines:
-  #file.write(line)
+for line in lines:
+  file.write(line)
 file.close()
 
 toappend=pd.read_csv(path2data+'raw_'+season_name(year)+'.csv')
@@ -151,3 +152,14 @@ data=data.iloc[::-1]
 data=data.reset_index(drop=True)
 print(data)
 data.to_csv('data.csv',index=False)
+
+"""
+data=pd.read_csv('train.csv')
+
+data=f.append2for1(data)
+data['Result']=f.result(data)
+data=data.iloc[::-1]
+data=data.append(toappend)
+data=data.iloc[::-1]
+b.to_csv('train.csv',index=False)
+"""

@@ -123,7 +123,7 @@ for team in file['home'].values:
 file['home']=new_H
 
 log=pd.read_csv('log.csv')
-log=log.append(file)
+log=log.append(file,sort=False)
 #log.to_csv('log.csv',index=False)
 
 print(file)

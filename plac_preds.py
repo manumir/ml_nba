@@ -66,5 +66,5 @@ df['plac_home']=home_odds
 df['plac_away']=away_odds
 
 log=pd.read_csv('log.csv')
-log=log.append(df)
+log=log.append(df,sort=False)
 log.to_csv('log.csv',index=False)

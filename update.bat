@@ -1,5 +1,5 @@
-update_data.py
-get_today_games.py
-plac_preds.py
-predictor_linear.py
-predictor_rf.py
+py update_data.py
+py get_today_games.py
+py plac_preds.py
+py predictor_linear.py
+py predictor_rf.py

@@ -53,11 +53,10 @@ def get_stats():
       html=bs4(driver.page_source,'html.parser')
       #features = html.table.thead.tr.text #don't need to scrape this multiple times
       stats=html.table.tbody.text
-      print(stats)
-      match=re.match(year,stats)
+      match=re.search(last_date,str(stats))
       print(match)
       if match:
-          stats=stats[:match.start()]
+        stats=stats[:match.start()-19]
       file.write(stats)
 
       if NUMBER_OF_PAGES>1:
@@ -117,12 +116,13 @@ toappend=pd.read_csv(path2data+'raw_'+season_name(year)+'.csv')
 toappend.pop('Unnamed: 24')
 toappend=toappend[-len(lines):]
 toappend=toappend.iloc[::-1]
+print(toappend)
 
 data=pd.read_csv('whole_raw_data.csv')
 data=data.dropna()
 data=data.astype('object')
 data=data.iloc[::-1]
-data=data.append(toappend)
+data=data.append(toappend,sort=False)
 data=data.iloc[::-1]
 data=data.reset_index(drop=True)
 data.to_csv('whole_raw_data.csv',index=False)
@@ -132,10 +132,11 @@ c2_avg=['PTS', 'FGM', 'FGA','FG%', '3PM', '3PA', '3P%',
         'FTM', 'FTA', 'FT%', 'OREB', 'DREB', 'REB',
         'AST', 'TOV', 'STL', 'BLK', 'PF', '+/-']
 
+toappend=toappend.reset_index(drop=True)
 for ix in range(len(toappend)):
   print(ix)
-  data1=toappend.loc[ix,'Game Date']
-  team=toappend.loc[ix,'Team']
+  data1=toappend.at[ix,'Game Date']
+  team=toappend.at[ix,'Team']
   ixs=f.get_past_games(data,data1,team,30)
   past=data.loc[ixs]
   toappend.at[ix,'winrate 30']=f.create_winrate(past,30)
@@ -147,7 +148,7 @@ for ix in range(len(toappend)):
 data=pd.read_csv('data.csv')
 data=data.dropna()
 data=data.iloc[::-1]
-data=data.append(toappend)
+data=data.append(toappend,sort=False)
 data=data.iloc[::-1]
 data=data.reset_index(drop=True)
 print(data)

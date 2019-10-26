@@ -162,15 +162,15 @@ def name2acro(column,site):
 
   # name that appear on placard.com
   if site =='placard':
-    teams1_placard=['Boston Celtics','Brooklyn Nets','NY Knicks','Philadel. 76ers','Toronto Raptors',
+    teams1=['Boston Celtics','Brooklyn Nets','NY Knicks','Philadel. 76ers','Toronto Raptors',
     'Chicago Bulls','Clev. Cavaliers','Detroit Pistons','Indiana Pacers','Milwaukee Bucks',
     'Atlanta Hawks','Charl. Hornets','Miami Heat','Orlando Magic','Washin. Wizards',
-    'Dall. Mavericks','Houston Rockets','Memp. Grizzlies','New Orleans Pelicans','SA Spurs',
+    'Dall. Mavericks','Houston Rockets','Memp. Grizzlies','NO Pelicans','SA Spurs',
     'Denver Nuggets','Minnesota Timb.','OKC Thunder','Trail Blazers','Utah Jazz',
-    'GS Warriors','LA Clippers','Los Angeles Lakers','Phoenix Suns','Sac. Kings']
+    'GS Warriors','LA Clippers','LA Lakers','Phoenix Suns','Sac. Kings']
     
   elif site=='nba':
-    teams1_nba=['Boston Celtics','Brooklyn Nets','New York Knicks','Philadelphia 76ers','Toronto Raptors',
+    teams1=['Boston Celtics','Brooklyn Nets','New York Knicks','Philadelphia 76ers','Toronto Raptors',
     'Chicago Bulls','Cleveland Cavaliers','Detroit Pistons','Indiana Pacers','Milwaukee Bucks',
     'Atlanta Hawks','Charlotte Hornets','Miami Heat','Orlando Magic','Washington Wizards',
     'Dallas Mavericks','Houston Rockets','Memphis Grizzlies','New Orleans Pelicans','San Antonio Spurs',
@@ -179,18 +179,18 @@ def name2acro(column,site):
 
   # sort teams names and teams acronyms
   teams.sort()
-  teams1_placard.sort()
+  teams1.sort()
   
   # bos and bkn are switched
   x=teams[1]
   teams[1]=teams[2]
   teams[2]=x
-  
+  """
   # nyk and nop are switched
   x=teams[18]
   teams[18]=teams[19]
   teams[19]=x
-  
+  """
   #sas and sac are switched
   x=teams[26]
   teams[26]=teams[24]
@@ -207,7 +207,7 @@ def name2acro(column,site):
     if team=='Philadel. ers':
       team='Philadel. 76ers'#file['away'].values:
     x=0
-    for name in teams1_placard:
+    for name in teams1:
       if name == team:
         name=teams[x]
         new_A.append(name)

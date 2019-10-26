@@ -38,5 +38,5 @@ log=pd.read_csv(name)
 df['home']=games['home']
 df['away']=games['away']
 df['pred']=pred
-log=log.append(df)
+log=log.append(df,sort=False)
 log.to_csv(name,index=False)

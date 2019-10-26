@@ -213,3 +213,9 @@
 [1025/191358.398:ERROR:exception_snapshot_win.cc(98)] thread ID 2976 not found in process
 [1025/191852.133:ERROR:process_reader_win.cc(123)] NtOpenThread: {Acesso negado} Um processo pediu acesso a um objeto, mas não lhe foram concedidos permissões de acesso. (0xc0000022)
 [1025/191852.142:ERROR:exception_snapshot_win.cc(98)] thread ID 4556 not found in process
+[1025/194634.789:ERROR:process_reader_win.cc(123)] NtOpenThread: {Acesso negado} Um processo pediu acesso a um objeto, mas não lhe foram concedidos permissões de acesso. (0xc0000022)
+[1025/194634.793:ERROR:exception_snapshot_win.cc(98)] thread ID 3780 not found in process
+[1025/195128.783:ERROR:process_reader_win.cc(123)] NtOpenThread: {Acesso negado} Um processo pediu acesso a um objeto, mas não lhe foram concedidos permissões de acesso. (0xc0000022)
+[1025/195128.783:ERROR:exception_snapshot_win.cc(98)] thread ID 12496 not found in process
+[1025/195307.232:ERROR:process_reader_win.cc(123)] NtOpenThread: {Acesso negado} Um processo pediu acesso a um objeto, mas não lhe foram concedidos permissões de acesso. (0xc0000022)
+[1025/195307.232:ERROR:exception_snapshot_win.cc(98)] thread ID 6836 not found in process

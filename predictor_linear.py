@@ -31,12 +31,12 @@ for game in list(range(len(games))):
 	
 	#print(b)
 	pred.append(model.predict(b))
-	print(games.at[game,'home'],games.at[game,'away'],model.predict(b))
+	#print(games.at[game,'home'],games.at[game,'away'],model.predict(b))
 
 name='linear_log.csv'
 log=pd.read_csv(name)
 df['home']=games['home']
 df['away']=games['away']
 df['pred']=pred
-log=log.append(df)
-#log.to_csv(name,index=False)
+log=log.append(df,sort=False)
+log.to_csv(name,index=False)

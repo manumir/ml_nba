@@ -10,6 +10,8 @@ to do:
 		because raw_2019-20.csv is a dataframe. (it 
 		has features as the first line while others
 		raw_years don't)
+		- FIX THIS, ELSE THIS MODEL WON'T GO PAST
+			THIS SEASON.
 
 improvements:
 	dataset only players

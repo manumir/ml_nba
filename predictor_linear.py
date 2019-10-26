@@ -37,6 +37,7 @@ name='linear_log.csv'
 log=pd.read_csv(name)
 df['home']=games['home']
 df['away']=games['away']
+df['date']=games['date']
 df['pred']=pred
 log=log.append(df,sort=False)
 log.to_csv(name,index=False)

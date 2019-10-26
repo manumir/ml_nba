@@ -56,7 +56,7 @@ def get_stats():
       match=re.search(last_date,str(stats))
       print(match)
       if match:
-        stats=stats[:match.start()-19]
+        stats=stats[:match.start()-20]
       file.write(stats)
 
       if NUMBER_OF_PAGES>1:
@@ -116,7 +116,6 @@ toappend=pd.read_csv(path2data+'raw_'+season_name(year)+'.csv')
 toappend.pop('Unnamed: 24')
 toappend=toappend[-len(lines):]
 toappend=toappend.iloc[::-1]
-print(toappend)
 
 data=pd.read_csv('whole_raw_data.csv')
 data=data.dropna()
@@ -126,7 +125,6 @@ data=data.append(toappend,sort=False)
 data=data.iloc[::-1]
 data=data.reset_index(drop=True)
 data.to_csv('whole_raw_data.csv',index=False)
-print(data)
 
 c2_avg=['PTS', 'FGM', 'FGA','FG%', '3PM', '3PA', '3P%',
         'FTM', 'FTA', 'FT%', 'OREB', 'DREB', 'REB',
@@ -151,16 +149,13 @@ data=data.iloc[::-1]
 data=data.append(toappend,sort=False)
 data=data.iloc[::-1]
 data=data.reset_index(drop=True)
-print(data)
 data.to_csv('data.csv',index=False)
 
-"""
-data=pd.read_csv('train.csv')
+train=pd.read_csv('train.csv')
+toappend=f.append2for1(toappend)
+toappend['Result']=f.result(toappend)
 
-data=f.append2for1(data)
-data['Result']=f.result(data)
-data=data.iloc[::-1]
-data=data.append(toappend)
-data=data.iloc[::-1]
-b.to_csv('train.csv',index=False)
-"""
+train=train.iloc[::-1]
+train=train.append(toappend,sort=False)
+train=train.iloc[::-1]
+train.to_csv('train.csv',index=False)

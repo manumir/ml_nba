@@ -32,7 +32,7 @@ def get_stats():
     a=html.find_all("th", class_="schedule-game__team-name")
     a=bs4(str(a),'html.parser')
     
-    file.write('away,home\n')
+    file.write('away,home,date\n')
     file.write(' ')## to make all names the same
     
     for x in a.text:
@@ -122,9 +122,15 @@ for team in file['home'].values:
         x=x+1
 file['home']=new_H
 
-log=pd.read_csv('log.csv')
-log=log.append(file,sort=False)
+#log=pd.read_csv('log.csv')
+#log=log.append(file,sort=False)
 #log.to_csv('log.csv',index=False)
 
+today=datetime.date.today()
+today=today.strftime("%d %m %Y")
+date=[]
+for x in range(len(file)):
+    date.append(today)
+file['date']=date
 print(file)
 file.to_csv('games.csv',index=False)

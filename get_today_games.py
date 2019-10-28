@@ -65,7 +65,7 @@ for i in range(len(file)):
         file=file.drop(i)
 file['home']=home
 
-file.to_csv('games.csv')
+file.to_csv('games.csv',index=False)
 
 teams=['MEM', 'HOU', 'BKN', 'BOS', 'LAC', 'NOP', 'SAC', 'POR', 'DET', 'UTA', 'CHA', 'SAS', 'WAS', 'TOR','DEN',
        'MIL', 'ATL','GSW', 'DAL', 'ORL', 'PHI', 'NYK', 'LAL', 'CLE', 'OKC', 'MIN', 'CHI', 'MIA', 'PHX', 'IND']
@@ -97,9 +97,6 @@ teams1.pop(24)
 teams1.insert(24,'Portland Trail Blazers')
 
 file=pd.read_csv('games.csv')
-file.pop('Unnamed: 0')
-print(file)
-
 # names to acronyms
 new_A=[]
 for team in file['away'].values:
@@ -122,15 +119,15 @@ for team in file['home'].values:
         x=x+1
 file['home']=new_H
 
-#log=pd.read_csv('log.csv')
-#log=log.append(file,sort=False)
-#log.to_csv('log.csv',index=False)
-
 today=datetime.date.today()
 today=today.strftime("%d %m %Y")
 date=[]
 for x in range(len(file)):
     date.append(today)
 file['date']=date
-print(file)
+"""
+log=pd.read_csv('log.csv')
+log=log.append(file,sort=False)
+log.to_csv('log.csv',index=False)
+"""
 file.to_csv('games.csv',index=False)

@@ -1,17 +1,5 @@
 to do:
-
-	1.delete .joblib files, delete predictors;
-		predict games on the same file that we train
-		the models;in other words, train the models
-		everyday and then predict the games
-
-	2.change concat.py to concat raw_years.csv
-		to concat by dataframes not with native python
-		because raw_2019-20.csv is a dataframe. (it 
-		has features as the first line while others
-		raw_years don't)
-		- FIX THIS, ELSE THIS MODEL WON'T GO PAST
-			THIS SEASON.
-
+	- arrange a simple way to log preds and results
+		(maybe create a folder)
 improvements:
 	dataset only players

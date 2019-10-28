@@ -16,19 +16,15 @@ from selenium.webdriver.common.by import By
 dates,home_odds,away_odds,homes,aways=[],[],[],[],[]
 def get_stats():
   driver =webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
-    
   driver.get('https://www.jogossantacasa.pt/web/Placard/eventos?id=22911')
-
   WebDriverWait(driver,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, "table.wide-table")))
-  html=bs4(driver.page_source,'html.parser')
   """
-
     match=re.search('1X2 INT',str(html))
     if match:
       html=html[0:match.start()-1]
       html=bs4(html,'html.parser')
   """
-
+  html=bs4(driver.page_source,'html.parser')
   stats=html.find_all("div", class_="content events")
   stats=bs4(str(stats[0]),'html.parser')
   games=stats.find_all("tr")
@@ -58,13 +54,19 @@ def get_stats():
 
 get_stats()
 
+today=datetime.date.today()
+today=today.strftime("%d %m %Y")
+date=[]
+for x in range(len(file)):
+    date.append(today)
+
 df=pd.DataFrame()
 df['home']=f.name2acro(homes,'placard')
 df['away']=f.name2acro(aways,'placard')
-df['date']=dates
+df['date']=date
 df['plac_home']=home_odds
 df['plac_away']=away_odds
 
-log=pd.read_csv('log.csv')
+log=pd.read_csv('plac_log.csv')
 log=log.append(df,sort=False)
-log.to_csv('log.csv',index=False)
+#log.to_csv('plac_log.csv',index=False)

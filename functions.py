@@ -3,16 +3,18 @@ import pandas as pd
 from sklearn import preprocessing
 
 # create a data frame of games before a certain date
-def get_past_games(df,data1,team,amount):
+def get_past_games(df,date2,team,amount):
   ixs=[]
   rows=df.loc[df['Team'] == team]
   dates=rows['Game Date']
   for ix in dates.index:
-    value=df.at[ix,'Game Date']
-    if datecomp(value,data1)==value:
-        ixs.append(ix)
-  return ixs[:amount]
-
+    if len(ixs)==20:
+      break
+    date1=df.at[ix,'Game Date']
+    if date1_sooner_than_date2(date1,date2):
+      ixs.append(ix)
+  return df.loc[ixs]
+  
 #averages for each column 
 def get_avgs(df,column):
   count=0
@@ -23,7 +25,7 @@ def get_avgs(df,column):
     return avg
   except Exception as e:
     print(e)
-    return np.nan 
+    return np.nan
 
 def create_winrate(df,amount):
   try:
@@ -54,65 +56,67 @@ def location(df):
       locations.append(1)
   return locations
 
-
 #data needs to be ordered from most recent to less
 def append2for1(data):
   data=data.reset_index(drop=True)
   left=pd.DataFrame(columns=data.columns)
   right=pd.DataFrame(columns=data.columns)
+  home,away=[],[]
+  
+  for ix in range(len(data)):
+    if data.at[ix,'Match Up'][4] == 'v':
+      home.append(ix)
+    elif data.at[ix,'Match Up'][4] == '@':
+      away.append(ix)
+  
+  home=data.loc[home]
+  home=home.reset_index(drop=True)
+  away=data.loc[away]
+  away=away.reset_index(drop=True)
 
-  it=list(range(data.shape[0]))
-  for ix in it:
-    print(len(it))
-    name=data.at[ix,'Match Up'][-3:]
-    date=data.at[ix,'Game Date']
-    other=data.loc[data['Game Date']==date]
-    other=other.loc[data['Team']==name]
-    it.remove(ix)
+  for ix in range(len(home)):
+    name=home.at[ix,'Match Up'][-3:]
+    date=home.at[ix,'Game Date']
+    other=away.loc[away['Game Date']==date]
+    other=other.loc[away['Team']==name]
 
-    # get home on the left
-    if data.loc[ix,'Match Up'][4]=='v':
-      left=left.append(data.loc[ix])
-      right=right.append(other)
-      left=left.reset_index(drop=True)
-      right=right.reset_index(drop=True)
-    else:
-      left=left.append(other)
-      right=right.append(data.loc[ix])
-      left=left.reset_index(drop=True)
-      right=right.reset_index(drop=True)
-    
-  row=left.join(right,rsuffix='_away')
-  return row
+    left=left.append(home.loc[[ix]])
+    right=right.append(other)
+  
+  left=left.reset_index(drop=True)
+  right=right.reset_index(drop=True)
+  done=left.join(right,lsuffix='_home',rsuffix='_away')
+
+  return done
   
 #create a function to determine if a date is sooner than another date
-def datecomp(date1,date2):
+def date1_sooner_than_date2(date1,date2):
     if date1[6:len(date1)]>date2[6:len(date2)]:
         #print("date1's year is later than date2's year")
-        return date2
+        return False
     if date1[6:len(date1)]<date2[6:len(date2)]:
         #print("date2's year is later than date1's year")
-        return date1
+        return True
     
     if date1[6:len(date1)]==date2[6:len(date2)]:
         if date1[0:2]>date2[0:2]:
             #print("date1's month is later than date2's month")
-            return date2
+            return False
     if date1[6:len(date1)]==date2[6:len(date2)]:
         if date1[0:2]<date2[0:2]:
             #print("date2's month is later than date1's month")
-            return date1
+            return True
         
     if date1[6:len(date1)]==date2[6:len(date2)]:
         if date1[0:2]==date2[0:2]:
             if date1[3:5]>date2[3:5]:
                 #print("date1's day is later than date2's day")
-                return date2
+                return False
     if date1[6:len(date1)]==date2[6:len(date2)]:
         if date1[0:2]==date2[0:2]:
             if date1[3:5]<date2[3:5]:
                 #print("date2's day is later than date1's day")
-                return date1
+                return True
             
     if date1[6:len(date1)]==date2[6:len(date2)]:
         if date1[0:2]==date2[0:2]:
@@ -129,18 +133,15 @@ def acc(true_y,pred_y):
   return count/len(true_y)
 
 # search for the best data arrangement for training
-def best_random_state(clf,data,range_of_possi):
+def best_random_state(clf,data,fraction,range_of_possi):
   best_i=0
   best_acc=0
   for i in range_of_possi:
-    train_dataset = data.sample(frac=0.9,random_state=i)# 11,7
+    train_dataset = data.sample(frac=fraction,random_state=i)# 11,7
     test_dataset = data.drop(train_dataset.index)
 
     train_labels = train_dataset.pop('Result')
     test_labels = test_dataset.pop('Result')
-
-    train_dataset=preprocessing.normalize(train_dataset)
-    test_dataset=preprocessing.normalize(test_dataset)
 
     train_dataset=preprocessing.scale(train_dataset)
     test_dataset=preprocessing.scale(test_dataset)
@@ -153,7 +154,6 @@ def best_random_state(clf,data,range_of_possi):
       best_i=i
       best_acc=accuracy
   print(best_i,"acc :",best_acc)
-  print(preds[0:5])
   return best_i
 
 def name2acro(column,site):

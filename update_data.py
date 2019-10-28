@@ -35,7 +35,7 @@ def season_name(year):
 def get_stats():
     driver = webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
     
-    if len(sys.argv)<3:
+    if len(sys.argv)<2:
       driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Regular%20Season')
     else:
       driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Playoffs')
@@ -57,7 +57,10 @@ def get_stats():
       print(match)
       if match:
         stats=stats[:match.start()-20]
+        file.write(stats)  
+        break
       file.write(stats)
+      print("added twice")
 
       if NUMBER_OF_PAGES>1:
         path=driver.find_element_by_class_name("stats-table-pagination__next")
@@ -97,52 +100,64 @@ for x in ff:
 file.close()
 
 #try to do this without having to open the file again
-
 filer=open(path2data+'data.txt','r')
 lines=filer.readlines()
 filer.close()
 os.remove(path2data+'data.txt')
 
-if len(sys.argv)<3:
-  file=open(path2data+'raw_'+season_name(year)+'.csv','a')
+if len(sys.argv)<2:
+  file=open(path2data+'raw_'+season_name(year)+'.csv','r')
+  file_existing_lines=file.readlines()
+  #file_existing_lines=file_existing_lines[0:1]+file_existing_lines[:0:-1]
+  file.close()
+  file=open(path2data+'raw_'+season_name(year)+'.csv','w')
 else:
-  file=open(path2data+'raw_'+season_name(year)+'playoffs.csv','a')
+  file=open(path2data+'raw_'+season_name(year)+'playoffs.csv','r')
+  file_existing_lines=file.readlines()
+  #file_existing_lines=file_existing_lines[0:1]+file_existing_lines[:0:-1]
+  file.close()
+  file=open(path2data+'raw_'+season_name(year)+'playoffs.csv','w')
 
-for line in lines:
+lines2write=file_existing_lines+lines
+for line in lines2write:
   file.write(line)
 file.close()
 
+# read data to update
 toappend=pd.read_csv(path2data+'raw_'+season_name(year)+'.csv')
 toappend.pop('Unnamed: 24')
 toappend=toappend[-len(lines):]
 toappend=toappend.iloc[::-1]
 
-data=pd.read_csv('whole_raw_data.csv')
-data=data.dropna()
-data=data.astype('object')
-data=data.iloc[::-1]
-data=data.append(toappend,sort=False)
-data=data.iloc[::-1]
-data=data.reset_index(drop=True)
-data.to_csv('whole_raw_data.csv',index=False)
+# update whole data.csv
+whole_data=pd.read_csv('whole_raw.csv')
+whole_data=whole_data.dropna()
+whole_data=whole_data.astype('object')
+whole_data=whole_data.iloc[::-1]
+whole_data=whole_data.append(toappend,sort=False)
+whole_data=whole_data.iloc[::-1]
+whole_data=whole_data.reset_index(drop=True)
+whole_data.to_csv('whole_raw.csv',index=False)
 
 c2_avg=['PTS', 'FGM', 'FGA','FG%', '3PM', '3PA', '3P%',
         'FTM', 'FTA', 'FT%', 'OREB', 'DREB', 'REB',
         'AST', 'TOV', 'STL', 'BLK', 'PF', '+/-']
 
+# get avgs of recent data
 toappend=toappend.reset_index(drop=True)
+toappend=toappend.astype('object')
 for ix in range(len(toappend)):
   print(ix)
   data1=toappend.at[ix,'Game Date']
   team=toappend.at[ix,'Team']
-  ixs=f.get_past_games(data,data1,team,30)
-  past=data.loc[ixs]
-  toappend.at[ix,'winrate 30']=f.create_winrate(past,30)
-  toappend.at[ix,'winrate 6']=f.create_winrate(past,6)
-  
+  past=f.get_past_games(whole_data,data1,team,20)
+  toappend.at[ix,'winrate 20']=f.create_winrate(past,20)
+  toappend.at[ix,'winrate 10']=f.create_winrate(past,10)
+  toappend.at[ix,'winrate 5']=f.create_winrate(past,5)
   for c in c2_avg:
     toappend.at[ix,c]=f.get_avgs(past,c)
 
+# update data.csv
 data=pd.read_csv('data.csv')
 data=data.dropna()
 data=data.iloc[::-1]
@@ -151,6 +166,7 @@ data=data.iloc[::-1]
 data=data.reset_index(drop=True)
 data.to_csv('data.csv',index=False)
 
+# update train.csv
 train=pd.read_csv('train.csv')
 toappend=f.append2for1(toappend)
 toappend['Result']=f.result(toappend)

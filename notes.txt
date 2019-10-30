@@ -1,5 +1,18 @@
 to do:
 	- arrange a simple way to log preds and results
 		(maybe create a folder)
+
+
+
 improvements:
-	dataset only players
+	dataset only players (next season maybe)
+
+
+better code:
+	this line in update_data.py:
+		#file_existing_lines=file_existing_lines[0:1]+file_existing_lines[:0:-1]
+		was run only one time to get the raw2019-20.csv file from less
+		recent to most recent, and now i don't need it anymore
+		but MAYBE(don't know for sure) next season i do, maybe if i update
+		from the start the file i don't, but if i have to scrape with nba scraper,
+		i do need it.

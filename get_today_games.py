@@ -120,7 +120,7 @@ for team in file['home'].values:
 file['home']=new_H
 
 today=datetime.date.today()
-today=today.strftime("%d %m %Y")
+today=today.strftime("%d/%m/%Y")
 date=[]
 for x in range(len(file)):
     date.append(today)

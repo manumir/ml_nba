@@ -23,7 +23,7 @@ data=data.drop(del2,1)
 clf = RandomForestClassifier(n_estimators=100, random_state=11,n_jobs=-1)
 
 fraction=0.95
-train_dataset = data.sample(frac=fraction,random_state=f.best_random_state(clf,data,fraction,list(range(30))))
+train_dataset = data.sample(frac=fraction,random_state=f.best_random_state(clf,data,fraction,list(range(200))))
 test_dataset = data.drop(train_dataset.index)
 
 train_labels = train_dataset.pop('Result')
@@ -44,7 +44,7 @@ for game in list(range(len(games))):
 	home=home.loc[[game]]
 	away=away.loc[[game]]
 	
-	print(home['Team'].values,away['Team'].values)
+	print('home: ',home['Team'].values,'away: ',away['Team'].values)
 
 	home=home[['PTS','FGM','FGA','FG%','3PM','3PA','3P%','FTM','FTA','FT%',
 	'OREB','DREB','REB','AST','TOV','STL','BLK','PF','+/-','winrate 20','winrate 10','winrate 5']]

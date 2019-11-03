@@ -1,16 +1,15 @@
 #! /usr/bin/python3
 
 import time
-import os
-import sys
 start_time = time.time()
 
+import os
+import sys
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs4
 import pandas as pd
 import re
 import functions as f
-
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -77,15 +76,12 @@ print("scraped in %s seconds" % (time.time() - start_time))
 ff=[]
 file =open(path2data+'data_raw.txt','r') #,encoding ='cp1252')
 file1=file.readlines()
-
 for x in file1:
   x=x.strip('\n')
   x=x.strip(' ')
   x=x + ','
-
   if x != ',':
     ff.append(x)
-
 file.close()
 os.remove(path2data+'data_raw.txt')
 
@@ -170,7 +166,6 @@ data.to_csv('data.csv',index=False)
 train=pd.read_csv('train.csv')
 toappend=f.append2for1(toappend)
 toappend['Result']=f.result(toappend)
-
 train=train.iloc[::-1]
 train=train.append(toappend,sort=False)
 train=train.iloc[::-1]

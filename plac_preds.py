@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import time
+import datetime
 start_time = time.time()
 
 from selenium import webdriver
@@ -8,6 +9,7 @@ from bs4 import BeautifulSoup as bs4
 import re
 import pandas as pd
 import functions as f
+import os
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -26,7 +28,7 @@ def get_stats():
   """
   html=bs4(driver.page_source,'html.parser')
   stats=html.find_all("div", class_="content events")
-  stats=bs4(str(stats[0]),'html.parser')
+  stats=bs4((str(stats[0])+str(stats[1])),'html.parser')
   games=stats.find_all("tr")
       
   for tr in games:
@@ -54,19 +56,30 @@ def get_stats():
 
 get_stats()
 
-today=datetime.date.today()
-today=today.strftime("%d %m %Y")
-date=[]
-for x in range(len(file)):
-    date.append(today)
+# add the game date
+now = datetime.datetime.now()
+new_dates=[]
+for x in dates:
+  new_dates.append(str(now.month)+'/'+str(now.day)+'/'+str(now.year))
 
+real_games=pd.read_csv('games.csv')
 df=pd.DataFrame()
 df['home']=f.name2acro(homes,'placard')
 df['away']=f.name2acro(aways,'placard')
-df['date']=date
-df['plac_home']=home_odds
-df['plac_away']=away_odds
+df['date']=new_dates
+df['plac_H']=home_odds
+df['plac_A']=away_odds
+df=df[:len(real_games)]
+df=df.sort_values('home')
 
-log=pd.read_csv('plac_log.csv')
+# delete the '76' on philadelphia odds
+for ix in range(len(df)):
+  if df.at[ix,'home'] or df.at[ix,'away']=='PHI':
+    df.at[ix,'plac_A']=df.at[ix,'plac_A'][-4:]
+    df.at[ix,'plac_H']=df.at[ix,'plac_H'][-4:]
+
+curr_path=os.getcwd()
+path2logs=curr_path+'\\logs\\'
+log=pd.read_csv(path2logs+'plac_log.csv')
 log=log.append(df,sort=False)
-#log.to_csv('plac_log.csv',index=False)
+log.to_csv(path2logs+'plac_log.csv',index=False)

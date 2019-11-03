@@ -1,7 +1,4 @@
 to do:
-	- arrange a simple way to log preds and results
-		(maybe create a folder)
-
 
 
 improvements:

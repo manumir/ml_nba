@@ -18,11 +18,18 @@ def get_stats():
     file=open('games.csv','w')#'w')
     WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CLASS_NAME, "schedule-content__week")))
     html=bs4(driver.page_source,'html.parser')
-    
+
+    # eliminate zeros on the left of today 
     today=datetime.date.today()
-    today=today.strftime("%B %d")
+    today=today.strftime("%B %d") 
+    day=str(today[-2:])
+    today=str(today)[:-2]+str(int(day))
     start=re.search(today,str(html))
+
+    # eliminate zeros on the left of tomorrow
     tomorrow=(datetime.date.today() + datetime.timedelta(days=1)).strftime("%B %d")
+    day=str(tomorrow[-2:])
+    tomorrow=str(tomorrow)[:-2]+str(int(day))
     end=re.search(tomorrow,str(html))
     try:
       html=str(html)[start.start():end.start()]
@@ -120,14 +127,11 @@ for team in file['home'].values:
 file['home']=new_H
 
 today=datetime.date.today()
-today=today.strftime("%d/%m/%Y")
+today=today.strftime("%m/%d/%Y")
 date=[]
 for x in range(len(file)):
     date.append(today)
 file['date']=date
-"""
-log=pd.read_csv('log.csv')
-log=log.append(file,sort=False)
-log.to_csv('log.csv',index=False)
-"""
+
+file=file.sort_values('home')
 file.to_csv('games.csv',index=False)

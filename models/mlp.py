@@ -23,7 +23,7 @@ data=data.drop(del2,1)
 clf = MLPClassifier(activation='logistic',random_state=1,max_iter=500)
 
 fraction=0.95
-train_dataset = data.sample(frac=fraction,random_state=f.best_random_state(clf,data,fraction,list(range(10))))
+train_dataset = data.sample(frac=fraction,random_state=f.best_random_state(clf,data,fraction,list(range(5))))
 test_dataset = data.drop(train_dataset.index)
 
 train_labels = train_dataset.pop('Result')

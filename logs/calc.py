@@ -8,7 +8,7 @@ lin=pd.read_csv('linear_log.csv')
 plac=pd.read_csv('plac_log.csv')
 data=pd.read_csv(path2og+'train.csv')
 
-data2calc=data[:len(rf)].sort_values('Team_home')
+data2calc=data[:len(rf)].sort_values(['Game Date_home','Team_home'])
 data2calc.reset_index(inplace=True,drop=True)
 
 results=list(data2calc['Result'])

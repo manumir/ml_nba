@@ -10,7 +10,16 @@ data=pd.read_csv(path2og+'train.csv')
 
 data2calc=data[:len(rf)].sort_values(['Game Date_home','Team_home'])
 data2calc.reset_index(inplace=True,drop=True)
+"""
+rf=rf.sort_values(['date','home'])
+rf.reset_index(inplace=True,drop=True)
 
+lin=lin.sort_values(['date','home'])
+lin.reset_index(inplace=True,drop=True)
+
+plac=plac.sort_values(['date','home'])
+plac.reset_index(inplace=True,drop=True)
+"""
 results=list(data2calc['Result'])
 
 linpreds=[]

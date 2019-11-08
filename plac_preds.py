@@ -20,15 +20,19 @@ def get_stats():
   driver =webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
   driver.get('https://www.jogossantacasa.pt/web/Placard/eventos?id=22911')
   WebDriverWait(driver,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, "table.wide-table")))
-  """
-    match=re.search('1X2 INT',str(html))
-    if match:
-      html=html[0:match.start()-1]
-      html=bs4(html,'html.parser')
-  """
+  
   html=bs4(driver.page_source,'html.parser')
+  match=re.search('1X2 INT',str(html))
+  if match:
+    html=str(html)
+    html=html[:match.start()]
+    html=bs4(html,'html.parser')
+  
   stats=html.find_all("div", class_="content events")
-  stats=bs4((str(stats[0])+str(stats[1])),'html.parser')
+  try:
+    stats=bs4((str(stats[0])+str(stats[1])),'html.parser')
+  except:
+    stats=bs4(str(stats[0]),'html.parser')
   games=stats.find_all("tr")
       
   for tr in games:
@@ -71,6 +75,9 @@ df['plac_H']=home_odds
 df['plac_A']=away_odds
 df=df[:len(real_games)]
 df=df.sort_values('home')
+
+if len(real_games)>len(df):
+  print('\nmissing {} games on plac_log\n'.format(len(real_games)-len(df)))
 
 # delete the '76' on philadelphia odds
 for ix in range(len(df)):

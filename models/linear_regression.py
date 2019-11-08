@@ -41,21 +41,34 @@ df2log['away']=games['away']
 df2log['date']=games['date']
 
 # predict today's games
+c2_avg=['PTS', 'FGM', 'FGA','FG%', '3PM', '3PA', '3P%',
+        'FTM', 'FTA', 'FT%', 'OREB', 'DREB', 'REB',
+        'AST', 'TOV', 'STL', 'BLK', 'PF', '+/-']
+
 preds=[]
-data=pd.read_csv(path2data+'data.csv')
+data=pd.read_csv(path2data+'whole_raw.csv')
 for game in list(range(len(games))):
-	home=data.loc[data['Team']==games.at[game,'home']]
-	away=data.loc[data['Team']==games.at[game,'away']]
+	b=pd.DataFrame()
+	team_home=games.at[game,'home']
+	team_away=games.at[game,'away']
+	teams=[team_home,team_away]
+	date=games.at[game,'date']
+	
+	x,teams_avgs=0,pd.DataFrame()
+	for team in teams:
+		past=f.get_past_games(data,date,team,20)
+		for c in c2_avg:
+			b.at[x,c]=f.get_avgs(past,c)
+		b.at[x,'winrate 20']=f.create_winrate(past,20)
+		b.at[x,'winrate 10']=f.create_winrate(past,10)
+		b.at[x,'winrate 5']=f.create_winrate(past,5)
+		x=x+1
+		teams_avgs=teams_avgs.append(b)
+
+	home=teams_avgs.iloc[[1]]
+	away=teams_avgs.iloc[[2]]
 	home=home.reset_index(drop=True)
 	away=away.reset_index(drop=True)
-	home=home.loc[[game]]
-	away=away.loc[[game]]
-	
-	home=home[['PTS','FGM','FGA','FG%','3PM','3PA','3P%','FTM','FTA','FT%',
-	'OREB','DREB','REB','AST','TOV','STL','BLK','PF','+/-','winrate 20','winrate 10','winrate 5']]
-	away=away[['PTS','FGM','FGA','FG%','3PM','3PA','3P%','FTM','FTA','FT%',
-	'OREB','DREB','REB','AST','TOV','STL','BLK','PF','+/-','winrate 20','winrate 10','winrate 5']]
-	
 	b=home.join(away,lsuffix='_home',rsuffix='_away')
 	b=b.drop(del2,1)
 	preds.append(clf.predict(b))

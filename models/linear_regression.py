@@ -25,13 +25,12 @@ for x in corr.index:
 data=data.drop(del2,1)
 
 clf=LinearRegression(n_jobs=-1)
-fraction=0.95
-train_dataset = data.sample(frac=fraction,random_state=f.best_random_state(clf,data,fraction,list(range(250))))
+train_dataset = data.sample(frac=0.9,random_state=12)#f.best_random_state(clf,data,fraction,list(range(50))))
 test_dataset = data.drop(train_dataset.index)
 train_labels = train_dataset.pop('Result')
 test_labels = test_dataset.pop('Result')
 clf.fit(train_dataset,train_labels)
-print(f.acc(clf.predict(test_dataset),test_labels))
+print('test: ',f.acc(clf.predict(test_dataset),test_labels))
 #joblib.dump(clf,'regression_linear.joblib')
 
 games=pd.read_csv(path2data+'games.csv')

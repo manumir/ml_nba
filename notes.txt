@@ -1,7 +1,7 @@
 to do:
-	until 11/07/2019(included) i predicted games based on last 6 games minus the most
+	-until 11/07/2019(included) i predicted games based on last 6 games minus the most
 	recent (2º,3º,4º,5º,6º)
-
+	-add missing data on logs on date 11/09/2019
 
 improvements:
 	dataset only players (next season maybe)

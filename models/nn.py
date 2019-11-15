@@ -1,26 +1,29 @@
 #!/usr/bin/python3
 
+import os
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 import functions as f
 
-a=pd.read_csv('train.csv')
+curr_path=os.getcwd()
+path2data=curr_path[:-6]
+
+a=pd.read_csv(path2data+'train.csv')
 a=a.dropna()
-a=a.drop(['Team','Match Up','Game Date','Team_away',
-           'Match Up_away','Game Date_away','MIN','MIN_away',
-           'W/L','W/L_away'],1)
+a=a.drop(['Team_home','Match Up_home','Game Date_home','Team_away',
+           'Match Up_away','Game Date_away','MIN_home','MIN_away',
+           'W/L_home','W/L_away'],1)
 
 corr=a.corr()['Result']
 del2=[]
 for x in corr.index:
   if abs(corr[x]) < 0.1:
     del2.append(x)
-
 a=a.drop(del2,1)
 
-train_dataset = a.sample(frac=0.95,random_state=5)
+train_dataset = a.sample(frac=0.85,random_state=5)
 test_dataset = a.drop(train_dataset.index)
 
 train_stats =train_dataset.describe()
@@ -40,7 +43,6 @@ print(len(train_dataset.keys()))
 def build_model():
     model = keras.Sequential([
     layers.Dense(train_dataset.shape[1],input_shape=[len(train_dataset.keys())],activation='sigmoid'),
-    layers.Dense(train_dataset.shape[1],activation='sigmoid'),
     layers.Dense(1,activation='sigmoid'),
   ])
     model.compile(optimizer='rmsprop',

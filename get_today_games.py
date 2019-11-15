@@ -17,11 +17,14 @@ def get_stats():
     driver.get('https://stats.nba.com/schedule/')
     file=open('games.csv','w')#'w')
     WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CLASS_NAME, "schedule-content__week")))
+    driver.execute_script("window.scrollTo(0,0)")
+    hide_prev_games=driver.find_element_by_class_name("switch-paddle")
+    hide_prev_games.click()
     html=bs4(driver.page_source,'html.parser')
 
     # eliminate zeros on the left of today 
     today=datetime.date.today()
-    today=today.strftime("%B %d") 
+    today=today.strftime("%B %d")
     day=str(today[-2:])
     today=str(today)[:-2]+str(int(day))
     start=re.search(today,str(html))
@@ -34,7 +37,7 @@ def get_stats():
     try:
       html=str(html)[start.start():end.start()]
     except:
-      html=str(html)[start.start():len(html)]
+      html=str(html)[start.start():]
     html=bs4(html,'html.parser')
     a=html.find_all("th", class_="schedule-game__team-name")
     a=bs4(str(a),'html.parser')

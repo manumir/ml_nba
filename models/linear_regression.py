@@ -70,7 +70,9 @@ for game in list(range(len(games))):
 	away=away.reset_index(drop=True)
 	b=home.join(away,lsuffix='_home',rsuffix='_away')
 	b=b.drop(del2,1)
-	preds.append(clf.predict(b))
+	pred=clf.predict(b)
+	print(games.loc[[game]],pred)
+	preds.append(pred)
 
 df2log['linear']=preds
 df2log=df2log.sort_values('home')

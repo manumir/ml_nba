@@ -25,7 +25,7 @@ for x in corr.index:
 data=data.drop(del2,1)
 
 clf=LinearRegression(n_jobs=-1)
-train_dataset = data.sample(frac=0.9,random_state=12)#f.best_random_state(clf,data,fraction,list(range(50))))
+train_dataset = data.sample(frac=0.99,random_state=12)#f.best_random_state(clf,data,fraction,list(range(50))))
 test_dataset = data.drop(train_dataset.index)
 train_labels = train_dataset.pop('Result')
 test_labels = test_dataset.pop('Result')

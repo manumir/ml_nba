@@ -38,7 +38,7 @@ def get_stats():
       driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Regular%20Season')
     else:
       driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Playoffs')
-    WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.nba-stat-table__overflow")))
+    WebDriverWait(driver,20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.nba-stat-table__overflow")))
     try:
       path_2_num_pages=driver.find_element_by_class_name("stats-table-pagination__info")
       NUMBER_OF_PAGES=int(path_2_num_pages.text[-2:])

@@ -15,21 +15,22 @@ data=data.dropna()
 data=data.drop(['Team_home','Match Up_home','Game Date_home','Team_away',
            'Match Up_away','Game Date_away','MIN_home','MIN_away',
            'W/L_home','W/L_away'],1)
-
+"""
 corr=data.corr()['Result']
 del2=[]
 for x in corr.index:
   if abs(corr[x]) < 0.07:
     del2.append(x)
 data=data.drop(del2,1)
-
+"""
 clf = RandomForestClassifier(n_estimators=1000, random_state=11,n_jobs=-1)
-train_dataset = data.sample(frac=0.99,random_state=12)#f.best_random_state(clf,data,fraction,list(range(150))))
+train_dataset = data.sample(frac=0.85,random_state=12)#f.best_random_state(clf,data,fraction,list(range(150))))
 test_dataset = data.drop(train_dataset.index)
 train_labels = train_dataset.pop('Result')
 test_labels = test_dataset.pop('Result')
 clf.fit(train_dataset,train_labels)
-print('test: ',f.acc(clf.predict(test_dataset),test_labels))
+preds=clf.predict(test_dataset)
+print('test: ',f.acc(preds,test_labels))
 #joblib.dump(clf,'regression_linear.joblib')
 
 games=pd.read_csv(path2data+'games.csv')
@@ -68,7 +69,7 @@ for game in list(range(len(games))):
 	home=home.reset_index(drop=True)
 	away=away.reset_index(drop=True)
 	b=home.join(away,lsuffix='_home',rsuffix='_away')
-	b=b.drop(del2,1)
+	#b=b.drop(del2,1)
 	pred=clf.predict(b)
 	pd.set_option('display.max_columns', None)
 	print('\n',b,'\n',games.loc[[game]],pred,'\n')

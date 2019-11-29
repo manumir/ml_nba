@@ -23,11 +23,12 @@ def get_stats():
   
   html=bs4(driver.page_source,'html.parser')
   match=re.search('1X2 INT',str(html))
+  """
   if match:
     html=str(html)
     html=html[:match.start()]
     html=bs4(html,'html.parser')
-  
+  """
   stats=html.find_all("div", class_="content events")
   try:
     stats=bs4((str(stats[0])+str(stats[1])),'html.parser')
@@ -78,6 +79,7 @@ df=df.sort_values('home')
 
 if len(real_games)>len(df):
   print('\nmissing {} games on plac_log\n'.format(len(real_games)-len(df)))
+  #sys.quit()
 
 # delete the '76' on philadelphia odds
 for ix in range(len(df)):

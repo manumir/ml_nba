@@ -34,10 +34,15 @@ def get_stats():
     day=str(tomorrow[-2:])
     tomorrow=str(tomorrow)[:-2]+str(int(day))
     end=re.search(tomorrow,str(html))
+    if end == None:
+        tomorrow=(datetime.date.today() + datetime.timedelta(days=2)).strftime("%B %d")
+        day=str(tomorrow[-2:])
+        tomorrow=str(tomorrow)[:-2]+str(int(day))
+        end=re.search(tomorrow,str(html))
     try:
-      html=str(html)[start.start():end.start()]
+        html=str(html)[start.start():end.start()]
     except:
-      html=str(html)[start.start():]
+        html=str(html)[start.start():]
     html=bs4(html,'html.parser')
     a=html.find_all("th", class_="schedule-game__team-name")
     a=bs4(str(a),'html.parser')

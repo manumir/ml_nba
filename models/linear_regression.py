@@ -20,7 +20,7 @@ data=data.drop(['Team_home','Match Up_home','Game Date_home','Team_away',
 corr=data.corr()['Result']
 del2=[]
 for x in corr.index:
-  if abs(corr[x]) < 0.07:
+  if abs(corr[x]) < 0.02:
     del2.append(x)
 data=data.drop(del2,1)
 
@@ -30,7 +30,9 @@ test_dataset = data.drop(train_dataset.index)
 train_labels = train_dataset.pop('Result')
 test_labels = test_dataset.pop('Result')
 clf.fit(train_dataset,train_labels)
-print('test: ',f.acc(clf.predict(test_dataset),test_labels))
+preds=clf.predict(test_dataset)
+#print('zeros:',f.get0and1(preds))
+print('test:',f.acc(preds,test_labels))
 #joblib.dump(clf,'regression_linear.joblib')
 
 games=pd.read_csv(path2data+'games.csv')

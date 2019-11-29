@@ -209,3 +209,15 @@ def name2acro(column,site):
       x=x+1
       
   return new_A
+
+def get0and1(preds):
+  zeros=0
+  #ones=0
+  for pred in preds:
+    if round(float(pred))==0:
+      zeros=zeros+1
+    """
+    elif round(float(pred)) >= 0.5:
+      ones=ones+1
+    """
+  return (zeros/len(preds))*100

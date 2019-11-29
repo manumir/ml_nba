@@ -35,8 +35,14 @@ print(data2calc,rf,lin,plac)
 results=list(data2calc['Result'])
 
 linpreds=[]
+zeros=0
 for x in lin['linear']:
-	linpreds.append(round(float(x[1:-1])))
+	if float(x[1:-1]) <0.51:
+		linpreds.append(0)
+		zeros=zeros+1
+	else:
+		linpreds.append(1)
+	#linpreds.append(round(float(x[1:-1])))
 
 rfpreds=[]
 for x in rf['rf']:

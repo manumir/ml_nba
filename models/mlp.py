@@ -1,7 +1,7 @@
 import pandas as pd
 import functions as f
 from sklearn.neural_network import MLPClassifier
-from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
 import os
 
 curr_path=os.getcwd()
@@ -25,14 +25,14 @@ for x in corr.index:
 data=data.drop(del2,1)
 
 clf = MLPClassifier(activation='logistic',random_state=1,max_iter=500)
-train_dataset = data.sample(frac=0.99,random_state=12)#f.best_random_state(clf,data,0.9,list(range(20))))
-test_dataset = data.drop(train_dataset.index)
-train_labels = train_dataset.pop('Result')
-test_labels = test_dataset.pop('Result')
-clf.fit(train_dataset,train_labels)
-preds=clf.predict(test_dataset)
-print('zeros: ',f.get0and1(preds))
-print('test: ',f.acc(preds,test_labels))
+
+Y=data.pop('Result')
+X=data
+x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.2, random_state=1)
+clf.fit(x_train,y_train)
+preds=clf.predict(x_test)
+print('zeros:',f.get0and1(preds))
+print('test:',f.acc(preds,y_test))
 #joblib.dump(clf,'regression_linear.joblib')
 
 games=pd.read_csv(path2data+'games.csv')

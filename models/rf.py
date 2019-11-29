@@ -1,7 +1,7 @@
 import pandas as pd
 import functions as f
-from sklearn.ensemble import RandomForestClassifier
-from sklearn import preprocessing
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
 import os
 
 curr_path=os.getcwd()
@@ -23,14 +23,16 @@ for x in corr.index:
     del2.append(x)
 data=data.drop(del2,1)
 """
-clf = RandomForestClassifier(n_estimators=1000, random_state=11,n_jobs=-1)
-train_dataset = data.sample(frac=0.85,random_state=12)#f.best_random_state(clf,data,fraction,list(range(150))))
-test_dataset = data.drop(train_dataset.index)
-train_labels = train_dataset.pop('Result')
-test_labels = test_dataset.pop('Result')
-clf.fit(train_dataset,train_labels)
-preds=clf.predict(test_dataset)
-print('test: ',f.acc(preds,test_labels))
+clf = RandomForestRegressor(n_estimators=1000, random_state=11,n_jobs=-1)
+
+# split data into train and test sets
+Y=data.pop('Result')
+X=data
+x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.01, random_state=1)
+clf.fit(x_train,y_train)
+preds=clf.predict(x_test)
+print('zeros:',f.get0and1(preds))
+print('test:',f.acc(preds,y_test))
 #joblib.dump(clf,'regression_linear.joblib')
 
 games=pd.read_csv(path2data+'games.csv')

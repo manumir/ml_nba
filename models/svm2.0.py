@@ -1,7 +1,8 @@
 import pandas as pd
 import functions as f
 from sklearn import svm
-from sklearn import preprocessing
+from sklearn.preprocessing import scale
+from sklearn.model_selection import train_test_split
 import os
 
 curr_path=os.getcwd()
@@ -20,17 +21,17 @@ for x in corr.index:
     del2.append(x)
 data=data.drop(del2,1)
  
-clf = svm.SVC(random_state=2,kernel='linear')
+clf = svm.LinearSVC(random_state=2)
 
-fraction=0.95
-train_dataset = data.sample(frac=fraction,random_state=f.best_random_state(clf,data,fraction,list(range(2))))
-test_dataset = data.drop(train_dataset.index)
-
-train_labels = train_dataset.pop('Result')
-test_labels = test_dataset.pop('Result')
-
-clf.fit(train_dataset,train_labels)
-print(f.acc(clf.predict(test_dataset),test_labels))
+# split data into train and test sets
+Y=data.pop('Result')
+X=data
+x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.2, random_state=1)
+x_train,x_test=scale(x_train),scale(x_test)
+clf.fit(x_train,y_train)
+preds=clf.predict(x_test)
+print('zeros:',f.get0and1(preds))
+print('test:',f.acc(preds,y_test))
 #joblib.dump(clf,'regression_linear.joblib')
 
 # predict today's games

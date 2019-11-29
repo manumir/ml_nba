@@ -1,38 +1,37 @@
 import pandas as pd
 import functions as f
+from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
 import os
 
 curr_path=os.getcwd()
 path2data=curr_path[:-6]
 
-#os.mkdir(curr_path[:-6]+'\\logs\\')
 path2logs=curr_path[:-6]+'\\logs\\'
-log=pd.read_csv(path2logs+'linear_log.csv')
+#log=pd.read_csv(path2logs+'trees_log.csv')
 
 data=pd.read_csv(path2data+'train.csv')
 data=data.dropna()
 data=data.drop(['Team_home','Match Up_home','Game Date_home','Team_away',
            'Match Up_away','Game Date_away','MIN_home','MIN_away',
            'W/L_home','W/L_away'],1)
-
+"""
 corr=data.corr()['Result']
 del2=[]
 for x in corr.index:
   if abs(corr[x]) < 0.02:
     del2.append(x)
 data=data.drop(del2,1)
-
-clf=LinearRegression(n_jobs=-1)
+"""
+clf = ExtraTreesRegressor(n_estimators=1000, random_state=11,n_jobs=-1)
 
 # split data into train and test sets
 Y=data.pop('Result')
 X=data
-x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.01, random_state=1)
+x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.2, random_state=1)
 clf.fit(x_train,y_train)
 preds=clf.predict(x_test)
-#print('zeros:',f.get0and1(preds))
+print('zeros:',f.get0and1(preds))
 print('test:',f.acc(preds,y_test))
 #joblib.dump(clf,'regression_linear.joblib')
 
@@ -72,12 +71,6 @@ for game in list(range(len(games))):
 	home=home.reset_index(drop=True)
 	away=away.reset_index(drop=True)
 	b=home.join(away,lsuffix='_home',rsuffix='_away')
-	b=b.drop(del2,1)
+	#b=b.drop(del2,1)
 	pred=clf.predict(b)
-	print(games.loc[[game]],pred)
 	preds.append(pred)
-
-df2log['linear']=preds
-df2log=df2log.sort_values('home')
-log=log.append(df2log,sort=False)
-log.to_csv(path2logs+'linear_log.csv',index=False)

@@ -6,6 +6,8 @@ import os
 
 curr_path=os.getcwd()
 path2data=curr_path[:-6]
+path2logs=curr_path[:-6]+'\\logs\\'
+log=pd.read_csv(path2logs+'logistic_log.csv')
 
 data=pd.read_csv(path2data+'train.csv')
 data=data.dropna()
@@ -74,3 +76,7 @@ for game in list(range(len(games))):
 	print(games.loc[[game]],pred)
 	preds.append(pred)
 
+df2log['logistic']=preds
+df2log=df2log.sort_values('home')
+log=log.append(df2log,sort=False)
+log.to_csv(path2logs+'logistic_log.csv',index=False)

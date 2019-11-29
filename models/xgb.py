@@ -7,6 +7,9 @@ from sklearn.metrics import accuracy_score
 
 curr_path=os.getcwd()
 path2data=curr_path[:-6]
+path2logs=curr_path[:-6]+'\\logs\\'
+log=pd.read_csv(path2logs+'xgb_log.csv')
+
 
 # load data
 data=pd.read_csv(path2data+'train.csv')
@@ -31,3 +34,8 @@ print('zeros:',f.get0and1(y_pred))
 # evaluate predictions
 accuracy = accuracy_score(y_test, predictions)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+df2log['xgb']=y_pred
+df2log=df2log.sort_values('home')
+log=log.append(df2log,sort=False)
+log.to_csv(path2logs+'xgb_log.csv',index=False)

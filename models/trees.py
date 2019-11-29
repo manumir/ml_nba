@@ -74,3 +74,9 @@ for game in list(range(len(games))):
 	#b=b.drop(del2,1)
 	pred=clf.predict(b)
 	preds.append(pred)
+
+
+df2log['trees']=preds
+df2log=df2log.sort_values('home')
+log=log.append(df2log,sort=False)
+log.to_csv(path2logs+'trees_log.csv',index=False)

@@ -10,7 +10,6 @@ path2data=curr_path[:-6]
 path2logs=curr_path[:-6]+'\\logs\\'
 log=pd.read_csv(path2logs+'xgb_log.csv')
 
-
 # load data
 data=pd.read_csv(path2data+'train.csv')
 data=data.dropna()
@@ -21,7 +20,7 @@ Y=data.pop('Result')
 X=data
 
 # split data into train and test sets
-X_train,X_test,y_train,y_test = train_test_split(X, Y, test_size=0.2, random_state=7)
+X_train,X_test,y_train,y_test = train_test_split(X, Y, test_size=0.01, random_state=7)
 
 # fit model no training data
 model = xgb.XGBRegressor()

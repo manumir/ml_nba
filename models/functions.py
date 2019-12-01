@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn import preprocessing
+import datetime
 
 # create a data frame of games before a certain date
 def get_past_games(df,date2,team,amount):
@@ -221,3 +221,16 @@ def get0and1(preds):
       ones=ones+1
     """
   return (zeros/len(preds))*100
+
+def fatigue(past_games):
+      past_games.reset_index(drop=True,inplace=True)
+    #try:
+      game_date=datetime.datetime.strptime(past_games.loc[0,'Game Date'], '%m/%d/%Y')
+      prev_game=datetime.datetime.strptime(past_games.loc[1,'Game Date'], '%m/%d/%Y')
+    
+      n_fatigue=(game_date - prev_game)#.strftime('%m/%d/%Y')
+      n_fatigue=str(n_fatigue)[:-13]
+      return n_fatigue
+    #except:
+    #  return np.nan
+      

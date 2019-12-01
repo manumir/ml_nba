@@ -7,4 +7,6 @@ py plac_preds.py
 cd .\models
 py linear_regression.py
 py rf.py
+py mlp.py
+py xgb.py
 cd..

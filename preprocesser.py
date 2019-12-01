@@ -22,11 +22,12 @@ for ix in range(len(data)):
   data.at[ix,'winrate 20']=f.create_winrate(past,20)
   data.at[ix,'winrate 10']=f.create_winrate(past,10)
   data.at[ix,'winrate 5']=f.create_winrate(past,5)
+  data.at[ix,'fatigue']=f.fatigue(past)
 
   for c in c2_avg:
     data.at[ix,c]=f.get_avgs(past,c)
 
-data.to_csv('data.csv',index=False)
+#data.to_csv('data.csv',index=False)
 
 b=f.append2for1(data)
 b['Result']=f.result(b)

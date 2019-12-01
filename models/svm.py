@@ -17,25 +17,32 @@ data=data.drop(['Team_home','Match Up_home','Game Date_home','Team_away',
            'Match Up_away','Game Date_away','MIN_home','MIN_away',
            'W/L_home','W/L_away'],1)
 
-corr=data.corr()['Result']
 del2=[]
+"""
+corr=data.corr()['Result']
 for x in corr.index:
   if abs(corr[x]) < 0.02:
     del2.append(x)
 data=data.drop(del2,1)
- 
+""" 
 clf = svm.LinearSVC(random_state=2)
 
 # split data into train and test sets
 Y=data.pop('Result')
 X=data
-x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.2, random_state=1)
+x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.01, random_state=1)
 x_train,x_test=scale(x_train),scale(x_test)
 clf.fit(x_train,y_train)
 preds=clf.predict(x_test)
-print('zeros:',f.get0and1(preds))
+#print('zeros:',f.get0and1(preds))
 print('test:',f.acc(preds,y_test))
 #joblib.dump(clf,'regression_linear.joblib')
+
+games=pd.read_csv(path2data+'games.csv')
+df2log=pd.DataFrame()
+df2log['home']=games['home']
+df2log['away']=games['away']
+df2log['date']=games['date']
 
 # predict today's games
 c2_avg=['PTS', 'FGM', 'FGA','FG%', '3PM', '3PA', '3P%',
@@ -59,6 +66,7 @@ for game in list(range(len(games))):
 		b.at[x,'winrate 20']=f.create_winrate(past,20)
 		b.at[x,'winrate 10']=f.create_winrate(past,10)
 		b.at[x,'winrate 5']=f.create_winrate(past,5)
+		b.at[x,'fatigue']=f.fatigue(past)
 		x=x+1
 		teams_avgs=teams_avgs.append(b)
 

@@ -1,6 +1,6 @@
 import pandas as pd
 import functions as f
-from sklearn.neural_network import MLPClassifier
+from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split
 import os
 
@@ -9,7 +9,7 @@ path2data=curr_path[:-6]
 
 #os.mkdir(curr_path[:-6]+'\\logs\\')
 path2logs=curr_path[:-6]+'\\logs\\'
-#log=pd.read_csv(path2logs+'mlp_log.csv')
+log=pd.read_csv(path2logs+'mlp_log.csv')
 
 data=pd.read_csv(path2data+'train.csv')
 data=data.dropna()
@@ -17,21 +17,23 @@ data=data.drop(['Team_home','Match Up_home','Game Date_home','Team_away',
            'Match Up_away','Game Date_away','MIN_home','MIN_away',
            'W/L_home','W/L_away'],1)
 
-corr=data.corr()['Result']
 del2=[]
+"""
+corr=data.corr()['Result']
 for x in corr.index:
   if abs(corr[x]) < 0.07:
     del2.append(x)
 data=data.drop(del2,1)
+"""
 
-clf = MLPClassifier(activation='logistic',random_state=1,max_iter=500)
+clf = MLPRegressor(activation='logistic',random_state=1,max_iter=500)
 
 Y=data.pop('Result')
 X=data
-x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.2, random_state=1)
+x_train,x_test,y_train,y_test = train_test_split(X, Y, test_size=0.01, random_state=1)
 clf.fit(x_train,y_train)
 preds=clf.predict(x_test)
-print('zeros:',f.get0and1(preds))
+#print('zeros:',f.get0and1(preds))
 print('test:',f.acc(preds,y_test))
 #joblib.dump(clf,'regression_linear.joblib')
 
@@ -63,6 +65,7 @@ for game in range(len(games)):
 		b.at[x,'winrate 20']=f.create_winrate(past,20)
 		b.at[x,'winrate 10']=f.create_winrate(past,10)
 		b.at[x,'winrate 5']=f.create_winrate(past,5)
+		b.at[x,'fatigue']=f.fatigue(past)
 		x=x+1
 		teams_avgs=teams_avgs.append(b)
 
@@ -76,9 +79,7 @@ for game in range(len(games)):
 	print(games.loc[[game]],pred)
 	preds.append(pred)
 
-"""
 df2log['mlp']=preds
 df2log=df2log.sort_values('home')
 log=log.append(df2log,sort=False)
 log.to_csv(path2logs+'mlp_log.csv',index=False)
-"""

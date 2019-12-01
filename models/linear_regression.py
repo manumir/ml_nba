@@ -12,17 +12,18 @@ path2logs=curr_path[:-6]+'\\logs\\'
 log=pd.read_csv(path2logs+'linear_log.csv')
 
 data=pd.read_csv(path2data+'train.csv')
+#data=pd.read_csv(path2data+'train.csv')
 data=data.dropna()
 data=data.drop(['Team_home','Match Up_home','Game Date_home','Team_away',
            'Match Up_away','Game Date_away','MIN_home','MIN_away',
            'W/L_home','W/L_away'],1)
 
-corr=data.corr()['Result']
+#corr=data.corr()['Result']
 del2=[]
-for x in corr.index:
-  if abs(corr[x]) < 0.02:
-    del2.append(x)
-data=data.drop(del2,1)
+#for x in corr.index:
+#  if abs(corr[x]) < 0.02:
+#    del2.append(x)
+#data=data.drop(del2,1)
 
 clf=LinearRegression(n_jobs=-1)
 
@@ -64,6 +65,7 @@ for game in list(range(len(games))):
 		b.at[x,'winrate 20']=f.create_winrate(past,20)
 		b.at[x,'winrate 10']=f.create_winrate(past,10)
 		b.at[x,'winrate 5']=f.create_winrate(past,5)
+		b.at[x,'fatigue']=f.fatigue(past)
 		x=x+1
 		teams_avgs=teams_avgs.append(b)
 

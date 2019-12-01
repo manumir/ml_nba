@@ -63,6 +63,7 @@ for game in list(range(len(games))):
 		b.at[x,'winrate 20']=f.create_winrate(past,20)
 		b.at[x,'winrate 10']=f.create_winrate(past,10)
 		b.at[x,'winrate 5']=f.create_winrate(past,5)
+		b.at[x,'fatigue']=f.fatigue(past)
 		x=x+1
 		teams_avgs=teams_avgs.append(b)
 

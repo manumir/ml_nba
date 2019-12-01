@@ -19,7 +19,7 @@ currentpath=os.getcwd()
 #os.makedirs(str(os.getcwd())+'\\data\\')
 path2data=os.path.join(currentpath,"data\\")
 
-data=pd.read_csv('data.csv')
+data=pd.read_csv('whole_raw.csv')
 last_date=data.at[0,'Game Date']
 year=last_date[-4:]
 
@@ -152,7 +152,7 @@ for ix in range(len(toappend)):
   toappend.at[ix,'winrate 5']=f.create_winrate(past,5)
   for c in c2_avg:
     toappend.at[ix,c]=f.get_avgs(past,c)
-
+"""
 # update data.csv
 data=pd.read_csv('data.csv')
 data=data.dropna()
@@ -161,7 +161,7 @@ data=data.append(toappend,sort=False)
 data=data.iloc[::-1]
 data=data.reset_index(drop=True)
 data.to_csv('data.csv',index=False)
-
+"""
 # update train.csv
 train=pd.read_csv('train.csv')
 toappend=f.append2for1(toappend)

@@ -25,7 +25,7 @@ for x in corr.index:
     del2.append(x)
 data=data.drop(del2,1)
 """ 
-clf = svm.LinearSVC(random_state=2)
+clf = svm.LinearSVC(random_state=2,max_iter=500)
 
 # split data into train and test sets
 Y=data.pop('Result')

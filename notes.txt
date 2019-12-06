@@ -1,12 +1,12 @@
 to do:
+	-different predicts on the same data but different pc's?
 
 notes:
 	-until 11/07/2019(included) i predicted games based on last 6 games minus the most recent (2º,3º,4º,5º,6º) (on linear)
 
 improvements:
-	get today games "if end==none:", change to recurssive function
-	dataset only players (next season maybe)
-
+	- whole different model; based on stats of players, then create
+		teams, see who's playing in the game to predict (exclude injuried players etc...).
 
 better code:
 	this line in update_data.py:

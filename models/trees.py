@@ -67,6 +67,7 @@ for game in list(range(len(games))):
 	away=away.reset_index(drop=True)
 	b=home.join(away,lsuffix='_home',rsuffix='_away')
 	pred=clf.predict(b)
+	print(games.loc[[game]],pred)
 	preds.append(pred)
 
 df2log['trees']=preds

@@ -74,7 +74,7 @@ for game in list(range(len(games))):
 	b=home.join(away,lsuffix='_home',rsuffix='_away')
 	#b=b.drop(del2,1)
 	pred=clf.predict(b)
-	pd.set_option('display.max_columns', None)
+	#pd.set_option('display.max_columns', None)
 	print('\n',b,'\n',games.loc[[game]],pred,'\n')
 	preds.append(pred)
 

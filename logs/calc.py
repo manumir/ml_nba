@@ -14,7 +14,7 @@ data=pd.read_csv(path2og+'train.csv')
 data=data[['Team_home','Team_away','Game Date_home','Result']]
 
 data2calc=pd.DataFrame()
-for date in list(set(list(rf['date'].values))):
+for date in list(set(list(lin['date'].values))):
 	data2calc=data2calc.append(data.loc[data['Game Date_home']==date])
 
 data2calc=data2calc.sort_values(['Game Date_home','Team_home'])

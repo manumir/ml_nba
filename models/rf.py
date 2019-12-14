@@ -75,7 +75,8 @@ for game in list(range(len(games))):
 	#b=b.drop(del2,1)
 	pred=clf.predict(b)
 	#pd.set_option('display.max_columns', None)
-	print('\n',b,'\n',games.loc[[game]],pred,'\n')
+	#print('\n',b,'\n',games.loc[[game]],pred,'\n')
+	print(games.loc[[game]],pred)
 	preds.append(pred)
 
 df2log['rf']=preds

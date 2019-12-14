@@ -1,3 +1,4 @@
+py ".\nba scraper.py" 2019
 py ".\nba scraper.py" 2018
 py ".\nba scraper.py" 2017
 py ".\nba scraper.py" 2016

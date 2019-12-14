@@ -19,7 +19,7 @@ currentpath=os.getcwd()
 #os.makedirs(str(os.getcwd())+'\\data\\')
 path2data=os.path.join(currentpath,"data\\")
 
-#
+# 2019 to 19-20
 def season_name(year):
   if int(year[-2:])+1 < 10:
     add0='0'+str(int(year[-2:])+1)
@@ -88,7 +88,6 @@ for x in f:
 file.close()
 
 #try to do this without having to open the file again
-
 filer=open(path2data+'data.txt','r')
 lines=filer.readlines()
 filer.close()
@@ -99,6 +98,7 @@ if len(sys.argv)<3:
 else:
   file=open(path2data+'raw_'+season_name(year)+'playoffs.csv','w')
 
+file.write('Team,Match Up,Game Date,W/L,MIN,PTS,FGM,FGA,FG%,3PM,3PA,3P%,FTM,FTA,FT%,OREB,DREB,REB,AST,TOV,STL,BLK,PF,+/-,\n')
 for line in lines:
   file.write(line)
 file.close()

@@ -8,7 +8,7 @@ def get_past_games(df,date2,team,amount):
   rows=df.loc[df['Team'] == team]
   dates=rows['Game Date']
   for ix in dates.index:
-    if len(ixs)==20:
+    if len(ixs)==amount:
       break
     date1=df.at[ix,'Game Date']
     if date1_sooner_than_date2(date1,date2):

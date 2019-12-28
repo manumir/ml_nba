@@ -22,16 +22,6 @@ data=data[:len(plac)]
 data=data[['MIN_home','Team_home','Team_away','Game Date_home','Result']]
 
 ############  LINEAR REGRESSION  ############
-linpreds=[]
-zeros=0
-for x in lin['linear']:
-	if float(x[1:-1]) <0.49:
-		linpreds.append(0)
-		zeros=zeros+1
-	else:
-		linpreds.append(1)
-
-# sort
 data2calc=pd.DataFrame()
 for date in list(set(list(lin['date'].values))):
 	data2calc=data2calc.append(data.loc[data['Game Date_home']==date])
@@ -49,32 +39,51 @@ for x in range(len(data2calc['Team_home'])):
 	if data2calc.at[x,'Team_home'] != lin.at[x,'home']:
 		print('wrong')
 
-count=0
-spent=0
+count,spent=0,0
+count_H,spent_H=0,0
+count_A,spent_A=0,0
+count_all=0
 for x in range(len(data2calc['Team_home'])):
-	if round(float((lin.at[x,'linear'][1:-1]))) == 1:
+	if float(lin.at[x,'linear'][1:-1]) >= 0.49:
 		if plac_lin.at[x,'plac_A']>plac_lin.at[x,'plac_H']:
 #			print(lin.at[x,'home'],lin.at[x,'away'])
-			if data2calc.at[x,'MIN_home']==48:
-				if data2calc.at[x,'Result']==1:
+			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
 #					print('disagreed i said',lin.at[x,'away'],data2calc.at[x,'Game Date_home'],plac_lin.at[x,'plac_A'])
-					#print(data2calc.at[x,'Game Date_home'],lin.at[x,'away'],plac_lin.at[x,'plac_A'])
 					count+=plac_lin.at[x,'plac_A']
-			spent+=1
+					count_A+=plac_lin.at[x,'plac_A']
 			count-=1
+			spent+=1
+			count_A-=1
+			spent_A+=1
+		if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
+			count_all+=plac_lin.at[x,'plac_A']
 
-	if round(float((lin.at[x,'linear'][1:-1]))) == 0:
-		if plac_lin.at[x,'plac_A']<plac_lin.at[x,'plac_H']:
+	if float(lin.at[x,'linear'][1:-1]) < 0.49:
+		if plac_lin.at[x,'plac_H']>plac_lin.at[x,'plac_A']:
 #			print(lin.at[x,'home'],lin.at[x,'away'])
-			if data2calc.at[x,'MIN_home']==48:
-				if data2calc.at[x,'Result']==0:
+			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==0:
 #					print('disagreed i said',lin.at[x,'home'],data2calc.at[x,'Game Date_home'],plac_lin.at[x,'plac_H'])
 					count+=plac_lin.at[x,'plac_H']
-			spent+=1
+					count_H+=plac_lin.at[x,'plac_H']
 			count-=1
-print('total:',count,'spent:',spent)#len(data2calc))
-print('linear regression return: {0:.4f}%'.format(count/spent *100))
+			spent+=1
+			count_H-=1
+			spent_H+=1
 
+		if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==0:
+			count_all+=plac_lin.at[x,'plac_H']
+
+print('total_H: {:.2f} spent_H: {}'.format(count_H,spent_H))
+print('linear return on home: {:.4f}%\n'.format(count_H/spent_H *100))
+
+print('total_A: {:.2f} spent_A: {}'.format(count_A,spent_A))
+print('linear return on away: {:.4f}%\n'.format(count_A/spent_A *100))
+
+print('total: {:.2f} spent: {}'.format(count,spent))
+print('linear return disagreed: {:.4f}%\n'.format(count/spent *100))
+
+print('total_H: {:.2f} spent_H: {}'.format(count_all,len(data2calc)))
+print('linear return on ALL games: {:.4f}%\n\n'.format((count_all-len(data2calc))/len(data2calc) *100))
 ## MULTI LAYER PERCEPTRON
 data2calc=pd.DataFrame()
 for date in list(set(list(mlp['date'].values))):
@@ -97,29 +106,51 @@ for x in range(len(data2calc['Team_home'])):
 		print('wrong')
 
 spent,count=0,0
+spent_A,spent_H=0,0
+count_A,count_H=0,0
+count_all=0
 for x in range(len(data2calc['Team_home'])):
 	if round(float((mlp.at[x,'mlp'][1:-1]))) == 1:
 		if plac_mlp.at[x,'plac_A']>plac_mlp.at[x,'plac_H']:
 #			print(mlp.at[x,'home'],mlp.at[x,'away'])
-			if data2calc.at[x,'MIN_home']==48:
-				if data2calc.at[x,'Result']==1:
+			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
 #					print('disagreed i said',mlp.at[x,'away'],data2calc.at[x,'Game Date_home'],plac_mlp.at[x,'plac_A'])
 					count+=plac_mlp.at[x,'plac_A']
+					count_A+=plac_mlp.at[x,'plac_A']
 			count-=1
 			spent+=1
+			count_A-=1
+			spent_A+=1
+	
+		if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
+			count_all+=plac_mlp.at[x,'plac_A']
 
 	if round(float((mlp.at[x,'mlp'][1:-1]))) == 0:
-		if plac_mlp.at[x,'plac_A']<plac_mlp.at[x,'plac_H']:
+		if plac_mlp.at[x,'plac_H']>plac_mlp.at[x,'plac_A']:
 #			print(mlp.at[x,'home'],mlp.at[x,'away'])
-			if data2calc.at[x,'MIN_home']==48:
-				if data2calc.at[x,'Result']==0:
+			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==0:
 #					print('disagreed i said',mlp.at[x,'home'],data2calc.at[x,'Game Date_home'],plac_mlp.at[x,'plac_H'])
 					count+=plac_mlp.at[x,'plac_H']
+					count_H+=plac_mlp.at[x,'plac_H']
 			count-=1
 			spent+=1
-print('total:',count,'spent:',spent)
-print('perceptron return: {0:.4f}%'.format(count/spent *100))
+			count_H-=1
+			spent_H+=1
 
+		if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==0:
+			count_all+=plac_mlp.at[x,'plac_H']
+
+print('total_H: {:.2f} spent_H: {}'.format(count_H,spent_H))
+print('perceptron return on home: {:.4f}%\n'.format(count_H/spent_H *100))
+
+print('total_A: {:.2f} spent_A: {}'.format(count_A,spent_A))
+print('perceptron return on away: {:.4f}%\n'.format(count_A/spent_A *100))
+
+print('total: {:.2f} spent: {}'.format(count,spent))
+print('perceptron return disagreed: {:.4f}%\n'.format(count/spent *100))
+
+print('total_H: {:.2f} spent_H: {}'.format(count_all,len(data2calc)))
+print('perceptron return on ALL games: {:.4f}%\n\n'.format((count_all-len(data2calc))/len(data2calc) *100))
 ################ placard ##################
 placpreds=[]
 for x in range(len(plac)):

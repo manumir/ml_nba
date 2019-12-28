@@ -230,7 +230,7 @@ def fatigue(past_games):
     
       n_fatigue=(game_date - prev_game)#.strftime('%m/%d/%Y')
       n_fatigue=str(n_fatigue)[:-13]
-      return n_fatigue
+      return int(n_fatigue)
     #except:
     #  return np.nan
       

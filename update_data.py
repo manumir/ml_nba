@@ -57,9 +57,10 @@ def get_stats():
       if match:
         stats=stats[:match.start()-20]
         file.write(stats)  
+        print('wrote',i)
         break
       file.write(stats)
-      print("added twice")
+      print("wrote",i)
 
       if NUMBER_OF_PAGES>1:
         path=driver.find_element_by_class_name("stats-table-pagination__next")
@@ -150,6 +151,7 @@ for ix in range(len(toappend)):
   toappend.at[ix,'winrate 20']=f.create_winrate(past,20)
   toappend.at[ix,'winrate 10']=f.create_winrate(past,10)
   toappend.at[ix,'winrate 5']=f.create_winrate(past,5)
+  toappend.at[ix,'fatigue']=f.fatigue(past)
   for c in c2_avg:
     toappend.at[ix,c]=f.get_avgs(past,c)
 """

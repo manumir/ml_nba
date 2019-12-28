@@ -1,5 +1,6 @@
 cd .\logs
 py calc.py
+py bets_simulation.py
 cd..
 py update_data.py
 cd .\logs
@@ -12,7 +13,7 @@ cd .\models
 py linear_regression.py
 py mlp.py
 py svm.py
-py trees.py
 py xgb.py
+py trees.py
 py rf.py
 cd..

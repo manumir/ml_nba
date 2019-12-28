@@ -12,7 +12,6 @@ path2logs=curr_path[:-6]+'\\logs\\'
 log=pd.read_csv(path2logs+'linear_log.csv')
 
 data=pd.read_csv(path2data+'train.csv')
-#data=pd.read_csv(path2data+'train.csv')
 data=data.dropna()
 data=data.drop(['Team_home','Match Up_home','Game Date_home','Team_away',
            'Match Up_away','Game Date_away','MIN_home','MIN_away',

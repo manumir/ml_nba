@@ -1,5 +1,13 @@
 #! /usr/bin/python3
 
+# usage:
+
+# scrape nba season 2008-2009:
+# nba scraper.py 2008
+
+# scrape nba playoffs 2008-2009:
+# nba scraper.py 2008 'anything here'
+
 import time
 import os
 import sys

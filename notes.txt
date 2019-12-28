@@ -1,7 +1,10 @@
 to do:
-	-change calc.py to calculate accurately everytime
-	-change bets_simulation to bet only on dissagreed outcomes
+	-change plac_preds.py to know when all the games are on placard's site
 	-check mathematicaly the best possible ROI (disagreed matches?? or all games??)
+
+done:
+	-change bets_simulation to bet only on dissagreed outcomes
+	-change calc.py to calculate accurately everytime
 
 notes:
 	-until 11/07/2019(included) i predicted games based on last 6 games minus the most recent (2º,3º,4º,5º,6º) (on linear)

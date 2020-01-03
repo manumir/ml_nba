@@ -18,4 +18,4 @@ dfcolumns = pd.DataFrame(X.columns)
 #concat two dataframes for better visualization 
 featureScores = pd.concat([dfcolumns,dfscores],axis=1)
 featureScores.columns = ['Specs','Score']  #naming the dataframe columns
-print(featureScores.nlargest(10,'Score'))  #print 10 best features
+print(featureScores.nlargest(50,'Score'))  #print 10 best features

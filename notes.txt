@@ -3,6 +3,7 @@ to do:
 	-check mathematicaly the best possible ROI (disagreed matches?? or all games??)
 
 done:
+	-test from 12/01/19 with & without fatigue (got 63.63% with & 63.13% without) @ 30/12/2019
 	-change bets_simulation to bet only on dissagreed outcomes
 	-change calc.py to calculate accurately everytime
 
@@ -10,6 +11,7 @@ notes:
 	-until 11/07/2019(included) i predicted games based on last 6 games minus the most recent (2º,3º,4º,5º,6º) (on linear)
 	-i guess mathematicaly the best possible ROI is if i
 	only bet on the disagreed matches??
+	-take into account the placard changes during the day to simulate the bets (bets_simulation.py)
 
 improvements:
 	- whole different model; based on stats of players, then create

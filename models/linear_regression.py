@@ -55,7 +55,7 @@ for game in list(range(len(games))):
 	team_away=games.at[game,'away']
 	teams=[team_home,team_away]
 	date=games.at[game,'date']
-	
+
 	x,teams_avgs=0,pd.DataFrame()
 	for team in teams:
 		past=f.get_past_games(data,date,team,20)

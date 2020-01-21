@@ -44,7 +44,7 @@ count_H,spent_H=0,0
 count_A,spent_A=0,0
 count_all=0
 for x in range(len(data2calc['Team_home'])):
-	if float(new_lin.at[x,'linear'][1:-1]) >= 0.49:
+	if float(new_lin.at[x,'linear'][1:-1]) > 0.49:
 		if plac_lin.at[x,'plac_A']>plac_lin.at[x,'plac_H']:
 #			print(lin.at[x,'home'],lin.at[x,'away'])
 			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
@@ -58,7 +58,7 @@ for x in range(len(data2calc['Team_home'])):
 		if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
 			count_all+=plac_lin.at[x,'plac_A']
 
-	if float(new_lin.at[x,'linear'][1:-1]) < 0.49:
+	if float(new_lin.at[x,'linear'][1:-1]) <= 0.49:
 		if plac_lin.at[x,'plac_H']>plac_lin.at[x,'plac_A']:
 #			print(lin.at[x,'home'],lin.at[x,'away'])
 			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==0:
@@ -74,10 +74,10 @@ for x in range(len(data2calc['Team_home'])):
 			count_all+=plac_lin.at[x,'plac_H']
 
 print('total_H: {:.2f} spent_H: {}'.format(count_H,spent_H))
-print('linear return on home: {:.4f}%\n'.format(count_H/spent_H *100))
+print('linear return on disagreed home: {:.4f}%\n'.format(count_H/spent_H *100))
 
 print('total_A: {:.2f} spent_A: {}'.format(count_A,spent_A))
-print('linear return on away: {:.4f}%\n'.format(count_A/spent_A *100))
+print('linear return on disagreed away: {:.4f}%\n'.format(count_A/spent_A *100))
 
 print('total: {:.2f} spent: {}'.format(count,spent))
 print('linear return disagreed: {:.4f}%\n'.format(count/spent *100))
@@ -149,10 +149,10 @@ for x in range(len(data2calc['Team_home'])):
 			count_all+=plac_mlp.at[x,'plac_H']
 
 print('total_H: {:.2f} spent_H: {}'.format(count_H,spent_H))
-print('perceptron return on home: {:.4f}%\n'.format(count_H/spent_H *100))
+print('perceptron return on disagreed home: {:.4f}%\n'.format(count_H/spent_H *100))
 
 print('total_A: {:.2f} spent_A: {}'.format(count_A,spent_A))
-print('perceptron return on away: {:.4f}%\n'.format(count_A/spent_A *100))
+print('perceptron return on disagreed away: {:.4f}%\n'.format(count_A/spent_A *100))
 
 print('total: {:.2f} spent: {}'.format(count,spent))
 print('perceptron return disagreed: {:.4f}%\n'.format(count/spent *100))

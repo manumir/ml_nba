@@ -14,6 +14,6 @@ py linear_regression.py
 py mlp.py
 py svm.py
 py xgb.py
-py trees.py
-py rf.py
+#py trees.py #too much timee to run
+#py rf.py #too much timee to run
 cd..

@@ -7,7 +7,7 @@ data=pd.read_csv(path2og+'train.csv')
 data=data[['Team_home','Team_away','Game Date_home','Result']]
 
 ########################### LIN,RF,PLAC ACCURACY ##########################
-rf=pd.read_csv('rf_log.csv')
+#rf=pd.read_csv('rf_log.csv')
 lin=pd.read_csv('linear_log.csv')
 plac=pd.read_csv('plac_log.csv')
 
@@ -29,13 +29,13 @@ for x in range(len(plac_lin)):
 		placpreds.append(0)
 	elif float(plac_lin.at[x,'plac_H'])>float(plac_lin.at[x,'plac_A']):
 		placpreds.append(1)
-
+"""
 new_rf=pd.DataFrame()
 for date in list(set(list(data2calc_lin['Game Date_home'].values))):
 	new_rf=new_rf.append(rf.loc[rf['date']==date])
 new_rf=new_rf.sort_values(['date','home'])
 new_rf.reset_index(inplace=True,drop=True)
-
+"""
 new_lin=pd.DataFrame()
 for date in list(set(list(data2calc_lin['Game Date_home'].values))):
 	new_lin=new_lin.append(lin.loc[lin['date']==date])
@@ -44,7 +44,7 @@ new_lin.reset_index(inplace=True,drop=True)
 
 linpreds=[]
 for x in new_lin['linear']:
-	if float(x[1:-1]) <0.52:
+	if float(x[1:-1]) <0.49:
 		linpreds.append(0)
 	else:
 		linpreds.append(1)
@@ -52,18 +52,24 @@ for x in new_lin['linear']:
 
 results=list(data2calc_lin['Result'])
 
+# check if logs are in the same order
+for x in range(len(data2calc_lin['Team_home'])):
+	if data2calc_lin.at[x,'Team_home'] != new_lin.at[x,'home'] or new_lin.at[x,'home'] != plac_lin.at[x,'home']:
+		print('WRONG')
+		break
+
 count=0
 for x in range(len(results)):
 	if (linpreds[x])==(results[x]):
 		count=count+1
 print('\nlinear acc:',count/len(results),'right:',count,'total:',len(results))
-
+"""
 count=0
 for x in range(len(results)):
 	if round(float(new_rf.at[x,'rf'][1:-1]))==(results[x]):
 		count=count+1
 print('rf acc:',count/len(results),'right:',count,'total:',len(results))
-
+"""
 count=0
 for x in range(len(results)):
 	if (placpreds[x])==(results[x]):
@@ -96,7 +102,7 @@ print('\nmlp acc:',count/len(mlp_results),'right:',count,'total:',len(mlp_result
 
 # placard on the mlp games
 plac_mlp=pd.DataFrame()
-for date in list(set(list(mlp['date'].values))):
+for date in list(set(list(new_mlp['date'].values))):
 	plac_mlp=plac_mlp.append(plac.loc[plac['date']==date])
 plac_mlp=plac_mlp.sort_values(['date','home'])
 plac_mlp.reset_index(inplace=True,drop=True)
@@ -107,6 +113,14 @@ for x in range(len(plac_mlp)):
 		placpreds_mlp.append(0)
 	elif float(plac_mlp.at[x,'plac_H'])>float(plac_mlp.at[x,'plac_A']):
 		placpreds_mlp.append(1)
+
+# check if logs are in the same order
+for x in range(len(data2calc_mlp['Team_home'])):
+	if data2calc_mlp.at[x,'Team_home'] != new_mlp.at[x,'home']:
+		print('WRONG 0')
+	if new_mlp.at[x,'home'] != plac_mlp.at[x,'home']:
+		print('WRONG 1')
+		break
 
 count=0
 for x in range(len(mlp_results)):

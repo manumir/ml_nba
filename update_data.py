@@ -21,7 +21,7 @@ path2data=os.path.join(currentpath,"data\\")
 
 data=pd.read_csv('whole_raw.csv')
 last_date=data.at[0,'Game Date']
-year=last_date[-4:]
+year='2020'
 
 # 2018 to 2018-2019
 def season_name(year):
@@ -103,17 +103,17 @@ filer.close()
 os.remove(path2data+'data.txt')
 
 if len(sys.argv)<2:
-  file=open(path2data+'raw_'+season_name(year)+'.csv','r')
+  file=open(path2data+'raw_2019-20.csv','r') # hardcoded cheack notes
   file_existing_lines=file.readlines()
   #file_existing_lines=file_existing_lines[0:1]+file_existing_lines[:0:-1]
   file.close()
-  file=open(path2data+'raw_'+season_name(year)+'.csv','w')
+  file=open(path2data+'raw_2019-20.csv','w') # hardcoded cheack notes
 else:
-  file=open(path2data+'raw_'+season_name(year)+'playoffs.csv','r')
+  file=open(path2data+'raw_2019-20playoffs.csv','r') # hardcoded cheack notes
   file_existing_lines=file.readlines()
   #file_existing_lines=file_existing_lines[0:1]+file_existing_lines[:0:-1]
   file.close()
-  file=open(path2data+'raw_'+season_name(year)+'playoffs.csv','w')
+  file=open(path2data+'raw_2019-20playoffs.csv','w') # hardcoded cheack notes
 
 lines2write=file_existing_lines+lines
 for line in lines2write:
@@ -121,7 +121,7 @@ for line in lines2write:
 file.close()
 
 # read data to update
-toappend=pd.read_csv(path2data+'raw_'+season_name(year)+'.csv')
+toappend=pd.read_csv(path2data+'raw_2019-20.csv') # hardcoded cheack notes
 toappend.pop('Unnamed: 24')
 toappend=toappend[-len(lines):]
 toappend=toappend.iloc[::-1]

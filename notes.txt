@@ -1,4 +1,6 @@
 to do:
+	-plac_preds.py has to add zeros added before day and month (2/1/19 to 02/01/19)
+	-hardcoded stuff in update_data.py relating the year variable
 	-change plac_preds.py to know when all the games are on placard's site
 	-check mathematicaly the best possible ROI (disagreed matches?? or all games??)
 

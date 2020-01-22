@@ -23,9 +23,12 @@ from selenium.common.exceptions import TimeoutException
 
 year=str(sys.argv[1])
 
+os_name=platform.system()
 currentpath=os.getcwd()
-#os.makedirs(str(os.getcwd())+'\\data\\')
-path2data=os.path.join(currentpath,"data\\")
+if on_name=='Linux':
+	path2data=os.path.join(currentpath,"data/")
+else:
+	path2data=os.path.join(currentpath,"data\\")
 
 # 2019 to 19-20
 def season_name(year):
@@ -36,8 +39,10 @@ def season_name(year):
     return year+'-'+str(int(year[-2:])+1)
 
 def get_stats():
-    driver = webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
-    
+    if os_name=='Linux':
+      driver = webdriver.Firefox(executable_path='../geckodriver')
+    else:
+      driver = webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe') 
     if len(sys.argv)<3:
       driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Regular%20Season')
     else:

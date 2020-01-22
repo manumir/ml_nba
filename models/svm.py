@@ -5,9 +5,15 @@ from sklearn.preprocessing import scale
 from sklearn.model_selection import train_test_split
 import os
 
+os_name=os.uname().sysname
 curr_path=os.getcwd()
 path2data=curr_path[:-6]
-path2logs=curr_path[:-6]+'\\logs\\'
+
+#os.mkdir(curr_path[:-6]+'\\logs\\')
+if os_name=='Linux':
+	path2logs=curr_path[:-6]+'logs/'
+else:
+	path2logs=curr_path[:-6]+'\\logs\\'
 
 log=pd.read_csv(path2logs+'svm_log.csv')
 

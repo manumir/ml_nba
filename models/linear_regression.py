@@ -4,11 +4,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import os
 
+os_name=os.uname().sysname
 curr_path=os.getcwd()
 path2data=curr_path[:-6]
 
 #os.mkdir(curr_path[:-6]+'\\logs\\')
-path2logs=curr_path[:-6]+'\\logs\\'
+if os_name=='Linux':
+	path2logs=curr_path[:-6]+'logs/'
+else:
+	path2logs=curr_path[:-6]+'\\logs\\'
+
 log=pd.read_csv(path2logs+'linear_log.csv')
 
 data=pd.read_csv(path2data+'train.csv')

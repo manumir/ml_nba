@@ -2,6 +2,7 @@
 
 #automate the process of predicting games
 import datetime
+import platform 
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs4
 
@@ -12,7 +13,10 @@ from selenium.webdriver.common.by import By
 import re
 
 def get_stats():
-    driver =webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
+    if platform.system()=='Linux':
+      driver = webdriver.Firefox(executable_path='../geckodriver')
+    else:
+      driver = webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
     print('program starting')
     driver.get('https://stats.nba.com/schedule/')
     file=open('games.csv','w')#'w')

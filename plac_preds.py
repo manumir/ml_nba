@@ -10,14 +10,20 @@ import re
 import pandas as pd
 import functions as f
 import os
+import platform
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+os_name=platform.system()
+
 dates,home_odds,away_odds,homes,aways=[],[],[],[],[]
 def get_stats():
-  driver =webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
+  if os_name=='Linux':
+    driver = webdriver.Firefox(executable_path='../geckodriver')
+  else:
+    driver = webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
   driver.get('https://www.jogossantacasa.pt/web/Placard/eventos?id=22911')
   WebDriverWait(driver,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, "table.wide-table")))
   
@@ -88,7 +94,11 @@ for ix in range(len(df)):
     df.at[ix,'plac_H']=df.at[ix,'plac_H'][-4:]
 
 curr_path=os.getcwd()
-path2logs=curr_path+'\\logs\\'
+if os_name=='Linux':
+	path2logs=curr_path+'logs/'
+else:
+	path2logs=curr_path+'\\logs\\'
+
 log=pd.read_csv(path2logs+'plac_log.csv')
 log=log.append(df,sort=False)
 log.to_csv(path2logs+'plac_log.csv',index=False)

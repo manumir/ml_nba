@@ -4,6 +4,7 @@ import time
 start_time = time.time()
 
 import os
+import platform
 import sys
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs4
@@ -15,9 +16,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
+os_name=platform.system()
 currentpath=os.getcwd()
 #os.makedirs(str(os.getcwd())+'\\data\\')
-path2data=os.path.join(currentpath,"data\\")
+
+if os_name=='Linux':
+	path2data=os.path.join(currentpath,"data/")
+else:
+	path2data=os.path.join(currentpath,"data\\")
 
 data=pd.read_csv('whole_raw.csv')
 last_date=data.at[0,'Game Date']
@@ -32,44 +38,46 @@ def season_name(year):
     return year+'-'+str(int(year[-2:])+1)
 
 def get_stats():
+  if os_name=='Linux':
+    driver = webdriver.Firefox(executable_path='../geckodriver')
+  else:
     driver = webdriver.Chrome(executable_path='C:/Users/dude/Desktop/chromedriver.exe')
-    
-    if len(sys.argv)<2:
-      driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Regular%20Season')
-    else:
-      driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Playoffs')
-    WebDriverWait(driver,20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.nba-stat-table__overflow")))
-    try:
-      path_2_num_pages=driver.find_element_by_class_name("stats-table-pagination__info")
-      NUMBER_OF_PAGES=int(path_2_num_pages.text[-2:])
-    except:
-      NUMBER_OF_PAGES=1
+  if len(sys.argv)<2:
+    driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Regular%20Season')
+  else:
+    driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Playoffs')
+  WebDriverWait(driver,20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.nba-stat-table__overflow")))
+  try:
+    path_2_num_pages=driver.find_element_by_class_name("stats-table-pagination__info")
+    NUMBER_OF_PAGES=int(path_2_num_pages.text[-2:])
+  except:
+    NUMBER_OF_PAGES=1
 
-    file=open(str(path2data)+'data_raw.txt','w')
-    i=0
-    print(NUMBER_OF_PAGES)
-    for i in range(NUMBER_OF_PAGES):
-      html=bs4(driver.page_source,'html.parser')
+  file=open(str(path2data)+'data_raw.txt','w')
+  i=0
+  print(NUMBER_OF_PAGES)
+  for i in range(NUMBER_OF_PAGES):
+    html=bs4(driver.page_source,'html.parser')
       #features = html.table.thead.tr.text #don't need to scrape this multiple times
-      stats=html.table.tbody.text
-      match=re.search(last_date,str(stats))
-      print(match)
-      if match:
-        stats=stats[:match.start()-20]
-        file.write(stats)  
-        print('wrote',i)
-        break
-      file.write(stats)
-      print("wrote",i)
+    stats=html.table.tbody.text
+    match=re.search(last_date,str(stats))
+    print(match)
+    if match:
+      stats=stats[:match.start()-20]
+      file.write(stats)  
+      print('wrote',i)
+      break
+    file.write(stats)
+    print("wrote",i)
 
-      if NUMBER_OF_PAGES>1:
-        path=driver.find_element_by_class_name("stats-table-pagination__next")
-        path.click()
-      else:
-        continue
+    if NUMBER_OF_PAGES>1:
+      path=driver.find_element_by_class_name("stats-table-pagination__next")
+      path.click()
+    else:
+      continue
 
-    file.close()
-    driver.quit()
+  file.close()
+  driver.quit()
 
 get_stats()
 print("scraped in %s seconds" % (time.time() - start_time))

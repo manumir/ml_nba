@@ -3,8 +3,9 @@ import functions as f
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import os
+import platform
 
-os_name=os.uname().sysname
+os_name=platform.system()
 curr_path=os.getcwd()
 path2data=curr_path[:-6]
 

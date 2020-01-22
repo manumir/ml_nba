@@ -3,10 +3,17 @@ import functions as f
 import os
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
+import platform
 
+os_name=platform.system()
 curr_path=os.getcwd()
 path2data=curr_path[:-6]
-path2logs=curr_path[:-6]+'\\logs\\'
+
+if os_name=='Linux':
+	path2logs=curr_path[:-6]+'logs/'
+else:
+	path2logs=curr_path[:-6]+'\\logs\\'
+
 log=pd.read_csv(path2logs+'xgb_log.csv')
 
 # load data

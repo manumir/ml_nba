@@ -4,8 +4,9 @@ from sklearn import svm
 from sklearn.preprocessing import scale
 from sklearn.model_selection import train_test_split
 import os
+import platform
 
-os_name=os.uname().sysname
+os_name=platform.system()
 curr_path=os.getcwd()
 path2data=curr_path[:-6]
 

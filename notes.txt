@@ -14,6 +14,7 @@ notes:
 	-i guess mathematicaly the best possible ROI is if i
 	only bet on the disagreed matches??
 	-take into account the placard changes during the day to simulate the bets (bets_simulation.py)
+  -the xgboost package takes wayyy too much space
 
 improvements:
 	- whole different model; based on stats of players, then create

@@ -2,4 +2,3 @@ pandas
 selenium
 scikit-learn
 beautifulsoup4
-xgboost

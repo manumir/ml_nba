@@ -95,7 +95,7 @@ for ix in range(len(df)):
 
 curr_path=os.getcwd()
 if os_name=='Linux':
-	path2logs=curr_path+'logs/'
+	path2logs=curr_path+'/logs/'
 else:
 	path2logs=curr_path+'\\logs\\'
 

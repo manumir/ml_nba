@@ -15,6 +15,7 @@ notes:
 	only bet on the disagreed matches??
 	-take into account the placard changes during the day to simulate the bets (bets_simulation.py)
   -the xgboost package takes wayyy too much space
+  -the multi-layer percepton model (mlp) changes somewhat significatively when i run it on linux vs windows
 
 improvements:
 	- whole different model; based on stats of players, then create

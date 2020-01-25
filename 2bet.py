@@ -30,10 +30,10 @@ len_plac=len(plac)
 print('lin:')
 for i in range(len(plac_preds)):
   if plac_preds[i]!=lin_preds[i]:
-    print(plac.at[len_plac-i-1,'home'],'@',plac.at[len_plac-i-1,'away'],'bet on',lin.at[len(lin)-i-1,'linear'])
+    print(plac.at[len_plac-i-1,'home'],'vs',plac.at[len_plac-i-1,'away'],'bet on',lin.at[len(lin)-i-1,'linear'])
 
 
 print('\nmlp:')
 for i in range(len(plac_preds)):
   if plac_preds[i]!=mlp_preds[i]:
-    print(plac.at[len_plac-i-1,'home'],'@',plac.at[len_plac-i-1,'away'],'bet on',mlp.at[len(mlp)-i-1,'mlp'])
+    print(plac.at[len_plac-i-1,'home'],'vs',plac.at[len_plac-i-1,'away'],'bet on',mlp.at[len(mlp)-i-1,'mlp'])

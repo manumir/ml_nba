@@ -93,6 +93,11 @@ for ix in range(len(df)):
     df.at[ix,'plac_A']=df.at[ix,'plac_A'][-4:]
     df.at[ix,'plac_H']=df.at[ix,'plac_H'][-4:]
 
+#add zeros on date before day or month
+for i in range(len(df)):
+	if int(df.at[i,'date'][:1])<10:
+		df.at[i,'date']='0'+str(df.at[i,'date'])
+
 curr_path=os.getcwd()
 if os_name=='Linux':
 	path2logs=curr_path+'/logs/'

@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 import re
 
 with open('gains_nba','r') as file:

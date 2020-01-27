@@ -17,3 +17,4 @@ python3 xgb.py
 #py trees.py #too much timee to run
 #py rf.py #too much timee to run
 cd ..
+python3 2bet.py

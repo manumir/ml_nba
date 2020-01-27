@@ -46,9 +46,9 @@ count_all=0
 for x in range(len(data2calc['Team_home'])):
 	if float(new_lin.at[x,'linear'][1:-1]) > 0.49:
 		if plac_lin.at[x,'plac_A']>plac_lin.at[x,'plac_H']:
-#			print(lin.at[x,'home'],lin.at[x,'away'])
+#			print(new_lin.at[x,'home'],new_lin.at[x,'away'],new_lin.at[x,'date'])
 			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
-#					print('disagreed i said',lin.at[x,'away'],data2calc.at[x,'Game Date_home'],plac_lin.at[x,'plac_A'])
+#					print('disagreed i said',new_lin.at[x,'away'],plac_lin.at[x,'plac_A'],data2calc.at[x,'Game Date_home'])
 					count+=plac_lin.at[x,'plac_A']
 					count_A+=plac_lin.at[x,'plac_A']
 			count-=1
@@ -60,9 +60,9 @@ for x in range(len(data2calc['Team_home'])):
 
 	if float(new_lin.at[x,'linear'][1:-1]) <= 0.49:
 		if plac_lin.at[x,'plac_H']>plac_lin.at[x,'plac_A']:
-#			print(lin.at[x,'home'],lin.at[x,'away'])
+#			print(new_lin.at[x,'home'],new_lin.at[x,'away'],new_lin.at[x,'date'])
 			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==0:
-#					print('disagreed i said',lin.at[x,'home'],data2calc.at[x,'Game Date_home'],plac_lin.at[x,'plac_H'])
+#					print('disagreed i said',new_lin.at[x,'home'],data2calc.at[x,'Game Date_home'],plac_lin.at[x,'plac_H'])
 					count+=plac_lin.at[x,'plac_H']
 					count_H+=plac_lin.at[x,'plac_H']
 			count-=1
@@ -73,7 +73,7 @@ for x in range(len(data2calc['Team_home'])):
 		if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==0:
 			count_all+=plac_lin.at[x,'plac_H']
 
-print('total_H: {:.2f} spent_H: {}'.format(count_H,spent_H))
+print('\ntotal_H: {:.2f} spent_H: {}'.format(count_H,spent_H))
 print('linear return on disagreed home: {:.4f}%\n'.format(count_H/spent_H *100))
 
 print('total_A: {:.2f} spent_A: {}'.format(count_A,spent_A))
@@ -120,9 +120,9 @@ count_all=0
 for x in range(len(data2calc['Team_home'])):
 	if round(float((new_mlp.at[x,'mlp'][1:-1]))) == 1:
 		if plac_mlp.at[x,'plac_A']>plac_mlp.at[x,'plac_H']:
-#			print(mlp.at[x,'home'],mlp.at[x,'away'])
+#			print(new_mlp.at[x,'home'],new_mlp.at[x,'away'],new_mlp.at[x,'date'])
 			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
-#					print('disagreed i said',mlp.at[x,'away'],data2calc.at[x,'Game Date_home'],plac_mlp.at[x,'plac_A'])
+#					print('disagreed i said',new_mlp.at[x,'away'],data2calc.at[x,'Game Date_home'],plac_mlp.at[x,'plac_A'])
 					count+=plac_mlp.at[x,'plac_A']
 					count_A+=plac_mlp.at[x,'plac_A']
 			count-=1
@@ -135,9 +135,9 @@ for x in range(len(data2calc['Team_home'])):
 
 	if round(float((new_mlp.at[x,'mlp'][1:-1]))) == 0:
 		if plac_mlp.at[x,'plac_H']>plac_mlp.at[x,'plac_A']:
-#			print(mlp.at[x,'home'],mlp.at[x,'away'])
+#			print(new_mlp.at[x,'home'],new_mlp.at[x,'away'],new_mlp.at[x,'date'])
 			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==0:
-#					print('disagreed i said',mlp.at[x,'home'],data2calc.at[x,'Game Date_home'],plac_mlp.at[x,'plac_H'])
+#					print('disagreed i said',new_mlp.at[x,'home'],data2calc.at[x,'Game Date_home'],plac_mlp.at[x,'plac_H'])
 					count+=plac_mlp.at[x,'plac_H']
 					count_H+=plac_mlp.at[x,'plac_H']
 			count-=1
@@ -158,9 +158,10 @@ print('total: {:.2f} spent: {}'.format(count,spent))
 print('perceptron return disagreed: {:.4f}%\n'.format(count/spent *100))
 
 print('total_H: {:.2f} spent_H: {}'.format(count_all,len(data2calc)))
-print('perceptron return on ALL games: {:.4f}%\n\n'.format((count_all-len(data2calc))/len(data2calc) *100))
+print('perceptron return on ALL games: {:.4f}%\n'.format((count_all-len(data2calc))/len(data2calc) *100))
 
-
+""" takes too much time to run for the info that it gives.
+		i also only made this to check the validity of the script
 ################ placard ##################
 # plac predictions
 new_plac=pd.DataFrame()
@@ -196,3 +197,4 @@ for x in range(len(data2calc['Team_home'])):
 				count+=new_plac.at[x,'plac_H']
 		count-=1
 print('placard return: {0:.4f}%'.format(count/len(new_plac) *100))
+"""

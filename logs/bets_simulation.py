@@ -48,7 +48,7 @@ for x in range(len(data2calc['Team_home'])):
 		if plac_lin.at[x,'plac_A']>plac_lin.at[x,'plac_H']:
 #			print(new_lin.at[x,'home'],new_lin.at[x,'away'],new_lin.at[x,'date'])
 			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
-#					print('disagreed i said',new_lin.at[x,'away'],plac_lin.at[x,'plac_A'],data2calc.at[x,'Game Date_home'])
+#					print('disagreed i said',new_lin.at[x,'away'],data2calc.at[x,'Game Date_home'],plac_lin.at[x,'plac_A'])
 					count+=plac_lin.at[x,'plac_A']
 					count_A+=plac_lin.at[x,'plac_A']
 			count-=1
@@ -122,9 +122,9 @@ for x in range(len(data2calc['Team_home'])):
 		if plac_mlp.at[x,'plac_A']>plac_mlp.at[x,'plac_H']:
 #			print(new_mlp.at[x,'home'],new_mlp.at[x,'away'],new_mlp.at[x,'date'])
 			if data2calc.at[x,'MIN_home']==48 and data2calc.at[x,'Result']==1:
-#					print('disagreed i said',new_mlp.at[x,'away'],data2calc.at[x,'Game Date_home'],plac_mlp.at[x,'plac_A'])
-					count+=plac_mlp.at[x,'plac_A']
-					count_A+=plac_mlp.at[x,'plac_A']
+#				print('disagreed i said',new_mlp.at[x,'away'],data2calc.at[x,'Game Date_home'],plac_mlp.at[x,'plac_A'])
+				count+=plac_mlp.at[x,'plac_A']
+				count_A+=plac_mlp.at[x,'plac_A']
 			count-=1
 			spent+=1
 			count_A-=1

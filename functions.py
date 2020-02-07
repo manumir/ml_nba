@@ -14,6 +14,42 @@ def get_past_games(df,date2,team,amount):
     if date1_sooner_than_date2(date1,date2):
       ixs.append(ix)
   return df.loc[ixs]
+
+def get_past_away_games(df,date2,team,amount):
+  ixs=[]
+  rows=df.loc[df['Team'] == team]
+  rows.reset_index(inplace=True,drop=True)
+  new_rows=[]
+  for x in range(len(rows)):
+    if rows.at[x,'Match Up'][4]=='@':
+      new_rows.append(x)
+  rows=rows.loc[new_rows]
+  dates=rows['Game Date']
+  for ix in dates.index:
+    if len(ixs)==amount:
+      break
+    date1=rows.at[ix,'Game Date']
+    if date1_sooner_than_date2(date1,date2):
+      ixs.append(ix)
+  return rows.loc[ixs]
+
+def get_past_home_games(df,date2,team,amount):
+  ixs=[]
+  rows=df.loc[df['Team'] == team]
+  rows.reset_index(inplace=True,drop=True)
+  new_rows=[]
+  for x in range(len(rows)):
+    if rows.at[x,'Match Up'][4]=='v':
+      new_rows.append(x)
+  rows=rows.loc[new_rows]
+  dates=rows['Game Date']
+  for ix in dates.index:
+    if len(ixs)==amount:
+      break
+    date1=rows.at[ix,'Game Date']
+    if date1_sooner_than_date2(date1,date2):
+      ixs.append(ix)
+  return rows.loc[ixs]
   
 #averages for each column 
 def get_avgs(df,column):

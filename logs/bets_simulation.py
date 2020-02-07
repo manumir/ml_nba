@@ -160,7 +160,7 @@ print('perceptron return disagreed: {:.4f}%\n'.format(count/spent *100))
 print('total_H: {:.2f} spent_H: {}'.format(count_all,len(data2calc)))
 print('perceptron return on ALL games: {:.4f}%\n'.format((count_all-len(data2calc))/len(data2calc) *100))
 
-""" takes too much time to run for the info that it gives.
+"""	takes too much time to run for the info that it gives.
 		i also only made this to check the validity of the script
 ################ placard ##################
 # plac predictions

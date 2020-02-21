@@ -115,8 +115,18 @@ teams1.pop(24)
 #teams1.pop(27)
 teams1.insert(24,'Portland Trail Blazers')
 
-file=pd.read_csv('games.csv')
 # names to acronyms
+file=pd.read_csv('games.csv')
+new_H=[]
+for team in file['home'].values:
+    x=0
+    for name in teams1:
+        if name == team:        
+            name=teams[x]
+            new_H.append(name)
+        x=x+1
+file['home']=new_H
+
 new_A=[]
 for team in file['away'].values:
     x=0
@@ -127,16 +137,6 @@ for team in file['away'].values:
         x=x+1
 file['away']=new_A
 
-# names to acronyms
-new_H=[]
-for team in file['home'].values:
-    x=0
-    for name in teams1:
-        if name == team:        
-            name=teams[x]
-            new_H.append(name)
-        x=x+1
-file['home']=new_H
 
 today=datetime.date.today()
 today=today.strftime("%m/%d/%Y")

@@ -3,6 +3,7 @@ to do:
 	-hardcoded stuff in update_data.py relating the year variable
 	-change plac_preds.py to know when all the games are on placard's site
 	-check mathematicaly the best possible ROI (disagreed matches?? or all games??)
+	-plot accuracy over the months
 
 done:
 	-test from 12/01/19 with & without fatigue (got 63.63% with & 63.13% without) @ 30/12/2019

@@ -133,10 +133,6 @@ for x in range(len(mlp_results)):
 print('plac acc_mlp:',count/len(mlp_results),'right:',count,'total:',len(mlp_results))
 
 
-
-
-
-
 """
 svm=pd.read_csv('svm_log.csv')
 svm=svm.sort_values(['date','home'])
@@ -245,4 +241,32 @@ for x in range(len(xgb_results)):
 	#	print(data2calc_mlp.at[x,'Team_home'],data2calc_mlp.at[x,'Team_away'],data2calc_mlp.at[x,'Result'],placpreds[x])
 			
 print('plac acc_xgb:',count/len(xgb_results),'right:',count,'total:',len(xgb_results),'\n')
+
+########################### see accuracy by team #####################################
+import matplotlib.pyplot as plt
+teams=['MEM', 'HOU', 'BKN', 'BOS', 'LAC', 'NOP', 'SAC', 'POR', 'DET', 'UTA', 'CHA', 'SAS', 'WAS', 'TOR','DEN','MIL', 'ATL','GSW', 'DAL', 'ORL', 'PHI', 'NYK', 'LAL', 'CLE', 'OKC', 'MIN', 'CHI', 'MIA', 'PHX', 'IND']
+d={}
+for team in teams:
+	d[team]=0
+count=0
+new_lin['linear']=linpreds
+for x in range(len(results)):
+	if (new_lin.at[x,'linear'])==(results[x]):
+		d[new_lin.at[x,'home']]=d[new_lin.at[x,'home']]+1
+		d[new_lin.at[x,'away']]=d[new_lin.at[x,'away']]+1
+		count=count+1
+
+e={}
+for team in teams:
+	e[team]=0
+count=0
+for x in range(len(results)):
+	e[new_lin.at[x,'home']]=e[new_lin.at[x,'home']]+1
+	e[new_lin.at[x,'away']]=e[new_lin.at[x,'away']]+1
+
+for team in teams:
+	d[team]=d[team]/e[team]
+
+plt.scatter(list(d.keys()),list(d.values()))
+plt.show()
 """

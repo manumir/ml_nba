@@ -48,7 +48,6 @@ def get_stats():
     driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Playoffs')
   
   WebDriverWait(driver,25).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.banner-actions-container")))
-  print(1)
 
   path=driver.find_element_by_id("onetrust-accept-btn-handler")
   path.click()

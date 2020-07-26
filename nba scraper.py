@@ -10,6 +10,7 @@
 
 import time
 import os
+import platform
 import sys
 start_time = time.time()
 
@@ -25,7 +26,7 @@ year=str(sys.argv[1])
 
 os_name=platform.system()
 currentpath=os.getcwd()
-if on_name=='Linux':
+if os_name=='Linux':
 	path2data=os.path.join(currentpath,"data/")
 else:
 	path2data=os.path.join(currentpath,"data\\")
@@ -47,7 +48,16 @@ def get_stats():
       driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Regular%20Season')
     else:
       driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Playoffs')
-    WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.nba-stat-table__overflow")))
+  
+    WebDriverWait(driver,25).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.banner-actions-container")))
+
+    path=driver.find_element_by_id("onetrust-accept-btn-handler")
+    path.click()
+  
+    driver.get('https://stats.nba.com/teams/boxscores-traditional/?Season='+season_name(year)+'&SeasonType=Regular%20Season')
+	
+    WebDriverWait(driver,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.nba-stat-table__overflow")))
+  
     try:
       path_2_num_pages=driver.find_element_by_class_name("stats-table-pagination__info")
       NUMBER_OF_PAGES=int(path_2_num_pages.text[-2:])

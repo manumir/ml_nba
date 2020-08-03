@@ -1,4 +1,4 @@
-home,away,date,plac_H,plac_A
+home,away,date,plac_H,plac_A,comments
 DET,BKN,11/02/2019,2.31,1.77
 GSW,CHA,11/02/2019,2.42,1.71
 MEM,PHX,11/02/2019,2.4,1.72
@@ -894,3 +894,5 @@ ATL,NYK,03/11/2020,1.58,2.74
 DAL,DEN,03/11/2020,2.08,1.95
 MIA,CHA,03/11/2020,1.24,4.71
 PHI,DET,03/11/2020,1.19,5.53
+LAL,LAC,07/30/2020,1.53,2.91,# location is neutral
+NOP,UTA,07/30/2020,1.76,2.32,# location is neutral
